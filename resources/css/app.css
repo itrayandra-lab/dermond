@@ -1,0 +1,574 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@import "trix/dist/trix.css";
+
+/* ========================================
+   DERMOND DESIGN SYSTEM - TAILWIND 4
+   Dark Theme, Tech-Inspired
+   ======================================== */
+
+@theme {
+    /* Typography - Font Families (Inter from Google Fonts) */
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    /* Dermond Custom Colors */
+    --color-dermond-dark: #050a14;
+    --color-dermond-nav: #0a1226;
+    --color-dermond-card: #0f172a;
+    --color-dermond-card-hover: #131c33;
+    --color-dermond-footer: #020611;
+    --color-dermond-accent: #2563eb;
+    --color-dermond-accent-hover: #1d4ed8;
+    --color-dermond-text: #e2e8f0;
+    --color-dermond-dim: #64748b;
+
+    /* Colors - Gray (Dark/Neutral) */
+    --color-gray-900: #111827;
+    --color-gray-800: #1f2937;
+    --color-gray-700: #374151;
+    --color-gray-600: #4b5563;
+    --color-gray-500: #6b7280;
+    --color-gray-400: #9ca3af;
+    --color-gray-300: #d1d5db;
+    --color-gray-200: #e5e7eb;
+    --color-gray-100: #f3f4f6;
+    --color-gray-50: #f9fafb;
+
+    /* Colors - Blue (Primary Accent) */
+    --color-blue-900: #1e3a8a;
+    --color-blue-700: #1d4ed8;
+    --color-blue-600: #2563eb;
+    --color-blue-500: #3b82f6;
+    --color-blue-400: #60a5fa;
+
+    /* Colors - Indigo (Secondary Accent) */
+    --color-indigo-600: #4f46e5;
+    --color-indigo-500: #6366f1;
+    --color-indigo-400: #818cf8;
+
+    /* Colors - Cyan (Tech/AI Accent) */
+    --color-cyan-tech: #00ffff;
+    --color-cyan-900: #164e63;
+    --color-cyan-500: #06b6d4;
+    --color-cyan-400: #22d3ee;
+
+    /* Colors - Purple (Gradient Accent) */
+    --color-purple-400: #c084fc;
+
+    /* Colors - Status */
+    --color-red-500: #ef4444;
+    --color-yellow-500: #eab308;
+    --color-green-500: #22c55e;
+    --color-emerald-500: #10b981;
+
+    /* Shadows */
+    --shadow-blue: 0 25px 50px -12px rgba(37, 99, 235, 0.25);
+    --shadow-glow: 0 0 15px rgba(37, 99, 235, 0.2);
+
+    /* Semantic Color Aliases */
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-light: #3b82f6;
+    --color-secondary: #6366f1;
+    --color-secondary-light: #818cf8;
+    --color-success: #22c55e;
+    --color-warning: #eab308;
+    --color-error: #ef4444;
+    --color-info: #06b6d4;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #e2e8f0;
+    --color-text-muted: #64748b;
+    --color-bg-primary: #050a14;
+    --color-bg-secondary: #0a1226;
+}
+
+/* ========================================
+   GLOBAL STYLES
+   ======================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #050a14;
+    color: #e2e8f0;
+    font-family: var(--font-sans);
+}
+
+::selection {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+/* Custom Scrollbar - Dermond Style */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #050a14;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes dermond-float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+.animate-dermond-float {
+    animation: dermond-float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+.animate-pulse-slow {
+    animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-delay-100 {
+    transition-delay: 100ms;
+}
+.reveal-delay-200 {
+    transition-delay: 200ms;
+}
+.reveal-delay-300 {
+    transition-delay: 300ms;
+}
+.reveal-delay-400 {
+    transition-delay: 400ms;
+}
+.reveal-delay-500 {
+    transition-delay: 500ms;
+}
+
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+@keyframes scan-line {
+    0% {
+        top: 0%;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+.animate-scan {
+    animation: scan-line 2s linear infinite;
+}
+
+@keyframes slow-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+.animate-slow-spin {
+    animation: slow-spin 10s linear infinite;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* ========================================
+   GLASS PANEL EFFECTS
+   ======================================== */
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+.glass-panel-dark {
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* ========================================
+   BACKGROUND PATTERNS
+   ======================================== */
+
+.bg-tech-grid {
+    background-image: linear-gradient(#00ffff 1px, transparent 1px),
+        linear-gradient(90deg, #00ffff 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+.bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+.bg-tech-sheen {
+    background-image: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+}
+
+/* ========================================
+   TEXT EFFECTS
+   ======================================== */
+
+.text-gradient-rose {
+    background: linear-gradient(to right, #d49ca5, #9a5a63);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-cyan {
+    background: linear-gradient(to right, #22d3ee, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-glow-cyan {
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* ========================================
+   BUTTON STYLES
+   ======================================== */
+
+.btn-primary {
+    @apply bg-blue-600 text-white px-10 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300;
+}
+.btn-primary:hover {
+    @apply bg-blue-700 shadow-lg;
+    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    @apply text-white px-10 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300;
+}
+.btn-secondary:hover {
+    @apply bg-white/10;
+}
+
+.btn-outline {
+    @apply border border-white/10 text-white px-12 py-4 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300;
+}
+.btn-outline:hover {
+    @apply bg-white/5 border-blue-500/50;
+}
+
+/* ========================================
+   CARD STYLES
+   ======================================== */
+
+.product-card {
+    @apply bg-dermond-card rounded-2xl p-8 border border-white/5 transition-all duration-300;
+}
+.product-card:hover {
+    @apply bg-dermond-card-hover border-blue-500/50 shadow-xl -translate-y-2;
+    box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.15);
+}
+
+/* ========================================
+   SECTION STYLES
+   ======================================== */
+
+.section-container {
+    @apply container mx-auto px-6 md:px-8;
+}
+
+.section-padding {
+    @apply py-24;
+}
+
+.section-padding-lg {
+    @apply py-32;
+}
+
+/* ========================================
+   IMAGE STYLES
+   ======================================== */
+
+.img-container {
+    @apply rounded-3xl overflow-hidden;
+}
+
+.img-container-lg {
+    @apply rounded-[2.5rem] overflow-hidden;
+}
+
+.img-zoom {
+    @apply transition-transform duration-700;
+}
+
+.group:hover .img-zoom {
+    @apply scale-105;
+}
+
+/* ========================================
+   TYPOGRAPHY PRESETS
+   ======================================== */
+
+.label-text {
+    @apply text-xs font-bold tracking-widest uppercase;
+}
+
+.micro-label {
+    @apply text-[10px] font-bold tracking-[0.2em] uppercase;
+}
+
+.body-text {
+    @apply text-base text-gray-400 font-light leading-relaxed;
+}
+
+.body-text-lg {
+    @apply text-lg text-gray-400 font-light leading-relaxed;
+}
+
+/* ========================================
+   SWIPER SLIDER CUSTOM STYLES
+   ======================================== */
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: white !important;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 2rem !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    opacity: 1;
+}
+
+@media (max-width: 640px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none !important;
+    }
+}
+
+.swiper-pagination {
+    bottom: 2rem !important;
+}
+
+.swiper-pagination-bullet {
+    background: white !important;
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    opacity: 0.5 !important;
+    transition: all 300ms ease !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: #3b82f6 !important;
+    opacity: 1 !important;
+}
+
+.swiper-slide {
+    opacity: 0 !important;
+    transition: opacity 1000ms ease !important;
+}
+
+.swiper-slide-active {
+    opacity: 1 !important;
+}
+
+/* ========================================
+   RICH TEXT / TRIX EDITOR CONTENT STYLING
+   ======================================== */
+
+trix-editor h1,
+trix-editor h2,
+trix-editor h3,
+trix-editor h4,
+trix-editor h5,
+trix-editor h6 {
+    font-weight: normal !important;
+}
+
+trix-editor h1 strong,
+trix-editor h2 strong,
+trix-editor h3 strong,
+trix-editor h4 strong,
+trix-editor h5 strong,
+trix-editor h6 strong {
+    font-weight: 700 !important;
+}
+
+.trix-content h1,
+.trix-content h2,
+.trix-content h3,
+.trix-content h4,
+.trix-content h5,
+.trix-content h6 {
+    color: var(--color-text-primary) !important;
+    font-weight: 700;
+}
+
+.trix-content p {
+    color: var(--color-text-secondary) !important;
+}
+
+.trix-content strong {
+    color: var(--color-text-primary) !important;
+    font-weight: 600;
+}
+
+.trix-content em {
+    color: var(--color-text-secondary) !important;
+}
+
+.trix-content a {
+    color: var(--color-primary) !important;
+}
+
+.trix-content a:hover {
+    color: var(--color-primary-dark) !important;
+}
+
+.trix-content ul,
+.trix-content ol {
+    color: var(--color-text-secondary) !important;
+}
+
+.trix-content blockquote {
+    color: var(--color-text-secondary) !important;
+    border-left-color: var(--color-primary) !important;
+}
+
+.trix-content code {
+    color: var(--color-text-primary) !important;
+    background-color: var(--color-bg-secondary) !important;
+}
+
+.trix-content pre {
+    background-color: var(--color-bg-secondary) !important;
+}
+
+.trix-content pre code {
+    color: var(--color-text-primary) !important;
+}
+
+trix-editor {
+    min-height: 300px;
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #374151;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+trix-editor:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+trix-toolbar .trix-button-group {
+    margin-bottom: 0;
+    border-radius: 0.5rem;
+}
