@@ -16,11 +16,11 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('email', 'customer@beautylatory.local')->first();
+        $user = User::where('email', 'customer@dermond.local')->first();
 
         if (! $user) {
             $user = User::factory()->create([
-                'email' => 'customer@beautylatory.local',
+                'email' => 'customer@dermond.local',
                 'username' => 'order_customer',
                 'role' => 'user',
             ]);

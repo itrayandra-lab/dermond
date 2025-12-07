@@ -4,7 +4,7 @@
 
 -   **Name**: Dermond
 -   **Purpose**: E-commerce platform for men's intimate care products
--   **Theme**: Dark, tech-inspired UI (converted from Beautylatory light/feminine theme)
+-   **Theme**: Dark, tech-inspired UI
 -   **User Persona**: Modern men seeking premium intimate hygiene products
 -   **Source Reference**: React source at `temp/dermond-intimate-care (1)/` for design matching
 

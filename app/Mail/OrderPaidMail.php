@@ -16,7 +16,7 @@ class OrderPaidMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[Beautylatory] Pembayaran Berhasil - Pesanan #'.$this->order->order_number,
+            subject: '[Dermond] Pembayaran Berhasil - Pesanan #'.$this->order->order_number,
         );
     }
 

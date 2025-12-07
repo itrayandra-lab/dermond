@@ -111,7 +111,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->route('customer.dashboard')
-            ->with('success', 'Account created successfully! Welcome to Beautylatory.');
+            ->with('success', 'Account created successfully! Welcome to Dermond.');
     }
 
     /**

@@ -16,7 +16,7 @@ class OrderCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[Beautylatory] Pesanan #'.$this->order->order_number.' Menunggu Pembayaran',
+            subject: '[Dermond] Pesanan #'.$this->order->order_number.' Menunggu Pembayaran',
         );
     }
 

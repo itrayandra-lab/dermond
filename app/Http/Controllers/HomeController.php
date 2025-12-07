@@ -28,12 +28,9 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
-        // Phytosync series products
+        // Phytosync series products (all published products)
         $phytosyncProducts = Product::with(['category', 'media'])
             ->published()
-            ->whereHas('category', function ($query) {
-                $query->where('name', 'Beautylatory');
-            })
             ->orderBy('created_at', 'desc')
             ->get();
 
