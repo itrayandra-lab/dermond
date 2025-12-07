@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             CartSeeder::class,
             OrderSeeder::class,
             ChatbotConfigurationSeeder::class,
-            ExpertQuoteSeeder::class,
             SiteSettingSeeder::class,
         ]);
     }

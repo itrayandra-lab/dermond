@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\ArticleCategoryController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\ChatbotSettingsController;
-use App\Http\Controllers\Admin\ExpertQuoteController as AdminExpertQuoteController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -138,7 +137,6 @@ Route::prefix('admin')->name('admin.')->middleware(['admin.auth'])->group(functi
         Route::resource('products', ProductController::class)->except(['show']);
         Route::resource('categories', CategoryController::class);
         Route::resource('slider', SliderController::class);
-        Route::resource('expert-quotes', AdminExpertQuoteController::class)->except(['show']);
         Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
         Route::get('orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
         Route::post('orders/{order}/mark-paid', [AdminOrderController::class, 'markPaid'])->name('orders.mark-paid');

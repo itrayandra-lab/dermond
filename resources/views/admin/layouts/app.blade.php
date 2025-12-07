@@ -64,16 +64,6 @@
                     Sliders
                 </a>
 
-                <a href="{{ route('admin.expert-quotes.index') }}"
-                    class="group flex items-center px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 {{ request()->routeIs('admin.expert-quotes.*') ? 'bg-gradient-to-r from-blue-500/10 to-transparent text-blue-400 border-l-2 border-blue-500' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent' }}">
-                    <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.expert-quotes.*') ? 'text-blue-400' : 'text-gray-500 group-hover:text-white' }} transition-colors"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                    </svg>
-                    Expert Quote
-                </a>
-
                 <a href="{{ route('admin.orders.index') }}"
                     class="group flex items-center px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 {{ request()->routeIs('admin.orders.*') ? 'bg-gradient-to-r from-blue-500/10 to-transparent text-blue-400 border-l-2 border-blue-500' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent' }}">
                     <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.orders.*') ? 'text-blue-400' : 'text-gray-500 group-hover:text-white' }} transition-colors"
