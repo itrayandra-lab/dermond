@@ -34,6 +34,7 @@ class SiteSettingFormRequest extends FormRequest
             'general.site_name' => ['required', 'string', 'max:255'],
             'general.tagline' => ['nullable', 'string', 'max:500'],
             'shipping.origin_city' => ['nullable', 'string', 'max:100'],
+            'chat.mode' => ['nullable', 'string', 'in:whatsapp,chatbot'],
         ];
     }
 

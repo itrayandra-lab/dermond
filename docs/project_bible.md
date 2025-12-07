@@ -180,11 +180,26 @@ class="bg-yellow-900/30 text-yellow-400 border border-yellow-500/30"
 -   Blue accent: `#2563eb`, `#3b82f6`
 -   Text: `#ffffff` (headings), `#e2e8f0` (body), `#94a3b8` (muted), `#64748b` (labels)
 
+## Floating Chat System
+
+### Architecture
+
+-   Single component `floating-chat.blade.php` with config toggle
+-   Mode controlled by `chat.mode` site setting (`whatsapp` or `chatbot`)
+-   WhatsApp mode: Simple green button linking to `wa.me/{contact.phone}`
+-   Chatbot mode: Full AI chat widget with session management
+
+### Settings
+
+-   `chat.mode` stored in `site_settings` table (group: `chat`)
+-   Admin toggle in Site Settings page
+-   WhatsApp uses `contact.phone` from same settings
+
 ## Conversion Status
 
 ### ✅ Customer-Facing Pages (All Dark Theme)
 
--   Homepage, Header, Footer, Floating Chat
+-   Homepage, Header, Footer, Floating Chat (WhatsApp/Chatbot toggle)
 -   Products (index, show, card)
 -   Articles (index, show, category, card)
 -   Cart (index, cart-item)
@@ -208,10 +223,7 @@ class="bg-yellow-900/30 text-yellow-400 border border-yellow-500/30"
 ### 🗑️ Deleted (Unused)
 
 -   `admin/auth/login.blade.php` - Auth is unified at `/login` for all users
-
-### ⏭️ Admin Panel (Skipped - Light Theme)
-
--   `admin/expert-quotes/` - create, edit, form (3 files) - skipped per user request
+-   `admin/expert-quotes/` - Entire feature removed (model, controller, views, migration, seeder)
 
 ## Admin Panel Styling Patterns
 

@@ -79,6 +79,12 @@ class SiteSettingSeeder extends Seeder
                 'group' => 'general',
                 'description' => 'Site Tagline',
             ],
+            [
+                'key' => 'chat.mode',
+                'value' => 'whatsapp',
+                'group' => 'chat',
+                'description' => 'Chat Mode (whatsapp or chatbot)',
+            ],
         ];
 
         foreach ($settings as $setting) {
