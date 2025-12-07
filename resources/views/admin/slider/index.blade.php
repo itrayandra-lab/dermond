@@ -103,11 +103,18 @@
         @forelse ($sliders as $slider)
             <div class="bg-dermond-card border border-white/10 p-4 rounded-2xl group hover:border-blue-500/30 transition-all duration-300 flex flex-col h-full">
                 <div class="relative aspect-[16/9] rounded-xl overflow-hidden mb-4 bg-dermond-dark">
-                    @if($slider->hasImage())
-                        <img src="{{ $slider->getImageUrl() }}" 
+                    @if($slider->hasDisplayImage())
+                        <img src="{{ $slider->getDisplayImageUrl() }}" 
                              alt="{{ $slider->label }}" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                              loading="lazy">
+                        @if($slider->product_id && !$slider->hasImage())
+                            <div class="absolute bottom-2 left-2">
+                                <span class="px-2 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider bg-blue-500/80 text-white backdrop-blur-sm">
+                                    Product Image
+                                </span>
+                            </div>
+                        @endif
                     @else
                         <div class="w-full h-full flex flex-col items-center justify-center text-gray-500 bg-white/5">
                             <svg class="w-10 h-10 mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -142,11 +149,14 @@
                 
                 <div class="flex-1 flex flex-col justify-between">
                     <div>
-                        <h3 class="text-lg font-bold text-white truncate mb-1" title="{{ $slider->label }}">
-                            {{ $slider->label ?: 'Untitled Slider' }}
+                        <h3 class="text-lg font-bold text-white truncate mb-1" title="{{ $slider->getDisplayTitle() }}">
+                            {{ $slider->label ?: $slider->getDisplayTitle() }}
                         </h3>
-                        <p class="text-xs text-gray-500 font-mono">
-                            ID: #{{ $slider->id }} • Updated {{ $slider->updated_at->diffForHumans() }}
+                        <p class="text-xs text-gray-500">
+                            @if($slider->product)
+                                <span class="text-blue-400">{{ $slider->product->name }}</span> •
+                            @endif
+                            ID: #{{ $slider->id }} • {{ $slider->updated_at->diffForHumans() }}
                         </p>
                     </div>
 

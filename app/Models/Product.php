@@ -43,8 +43,22 @@ class Product extends Model implements HasMedia
         'status',
         'is_featured',
         'description',
+        'features',
         'lynk_id_link',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'features' => 'array',
+            'is_featured' => 'boolean',
+        ];
+    }
 
     /**
      * The attributes that should be hidden for serialization.

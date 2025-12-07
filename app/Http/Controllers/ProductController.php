@@ -123,6 +123,10 @@ class ProductController extends Controller
             'status' => 'required|in:draft,published,archived',
             'is_featured' => 'nullable|boolean',
             'description' => 'required|string',
+            'features' => 'nullable|array|max:6',
+            'features.*.icon' => 'required_with:features|string|in:shield,droplet,bolt,sparkles,leaf,heart',
+            'features.*.title' => 'required_with:features|string|max:50',
+            'features.*.description' => 'nullable|string|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 2MB
             'lynk_id_link' => 'nullable|url',
         ]);
@@ -139,6 +143,7 @@ class ProductController extends Controller
             'lynk_id_link',
         ]);
         $productData['is_featured'] = $request->boolean('is_featured');
+        $productData['features'] = $request->input('features', []);
 
         $product = Product::create($productData);
 
@@ -189,6 +194,10 @@ class ProductController extends Controller
             'status' => 'required|in:draft,published,archived',
             'is_featured' => 'nullable|boolean',
             'description' => 'required|string',
+            'features' => 'nullable|array|max:6',
+            'features.*.icon' => 'required_with:features|string|in:shield,droplet,bolt,sparkles,leaf,heart',
+            'features.*.title' => 'required_with:features|string|max:50',
+            'features.*.description' => 'nullable|string|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 2MB
             'lynk_id_link' => 'nullable|url',
         ]);
@@ -205,6 +214,7 @@ class ProductController extends Controller
             'lynk_id_link',
         ]);
         $productData['is_featured'] = $request->boolean('is_featured');
+        $productData['features'] = $request->input('features', []);
 
         $product->update($productData);
 

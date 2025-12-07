@@ -107,12 +107,22 @@
 -   Use factories, not raw inserts
 -   Run `php artisan test --filter=MethodName` for focused tests
 
+### Branding
+
+-   NO Beautylatory references - this is Dermond
+-   Email subjects use `[Dermond]` prefix
+-   Seeder emails use `@dermond.local` domain
+-   Social URLs: `instagram.com/dermond`, `facebook.com/dermond`, `youtube.com/@dermond`
+
 ## Key Files Reference
 
 ### Homepage
 
 -   `resources/views/home/index.blade.php` - 5 sections (Hero, Category Grid, Blog, Products, Features)
--   Controller passes: `$heroProducts`, `$phytosyncProducts`, `$editorialArticles`, `$products`
+-   Controller passes: `$sliders`, `$featuredProducts`, `$products`, `$editorialArticles`, `$articles`
+-   Hero uses `sliders` table (hybrid: product-linked or custom banner)
+-   "THE ULTIMATE COLLECTION" uses `$featuredProducts` (is_featured=true)
+-   "PRODUCTS" section uses `$products` (all published, limit 6)
 
 ### JS Entry
 
@@ -194,6 +204,29 @@ class="bg-yellow-900/30 text-yellow-400 border border-yellow-500/30"
 -   `chat.mode` stored in `site_settings` table (group: `chat`)
 -   Admin toggle in Site Settings page
 -   WhatsApp uses `contact.phone` from same settings
+
+## Product Features System
+
+-   JSON column `features` on products table
+-   Array of objects: `[{icon, title, description}, ...]`
+-   Max 6 features per product
+-   Icons: shield, droplet, bolt, sparkles, leaf, heart
+-   Displayed on product detail page as key benefits grid
+-   Admin form uses Alpine.js dynamic inputs
+
+## Hybrid Slider System
+
+-   Sliders can link to product OR be custom banners
+-   Product-linked: auto-populates title, price, CTA, image from product
+-   Custom: requires title, image, CTA link
+-   Admin form uses product-first approach (select product → done)
+-   Model helpers: `getDisplayTitle()`, `getDisplayPrice()`, `getDisplayImageUrl()`, `hasDisplayImage()`
+
+## Admin UI Patterns
+
+-   **Table view**: Products, Orders, Articles, Users (data-heavy)
+-   **Card grid view**: Sliders (visual-first, few items)
+-   Card grid is appropriate for media/gallery management
 
 ## Conversion Status
 

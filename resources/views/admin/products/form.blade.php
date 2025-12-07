@@ -79,6 +79,82 @@
                 </div>
             </div>
 
+            {{-- Product Features --}}
+            <div class="bg-dermond-card border border-white/10 rounded-2xl p-6 md:p-8"
+                 x-data="{
+                    features: {{ json_encode(old('features', $product->features ?? [])) ?: '[]' }},
+                    icons: [
+                        { value: 'shield', label: 'Shield (Protection)' },
+                        { value: 'droplet', label: 'Droplet (Hydration)' },
+                        { value: 'bolt', label: 'Bolt (Freshness)' },
+                        { value: 'sparkles', label: 'Sparkles (Clean)' },
+                        { value: 'leaf', label: 'Leaf (Natural)' },
+                        { value: 'heart', label: 'Heart (Care)' },
+                    ],
+                    addFeature() {
+                        if (this.features.length < 6) {
+                            this.features.push({ icon: 'shield', title: '', description: '' });
+                        }
+                    },
+                    removeFeature(index) {
+                        this.features.splice(index, 1);
+                    }
+                 }">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        Product Features
+                    </h3>
+                    <button type="button" @click="addFeature()" x-show="features.length < 6"
+                            class="text-xs font-bold uppercase tracking-widest text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        Add Feature
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mb-4">Highlight key benefits (max 6). Displayed on product detail page.</p>
+
+                <div class="space-y-4">
+                    <template x-for="(feature, index) in features" :key="index">
+                        <div class="p-4 rounded-xl bg-dermond-dark border border-white/10 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest" x-text="'Feature ' + (index + 1)"></span>
+                                <button type="button" @click="removeFeature(index)" class="text-red-400 hover:text-red-300">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Icon</label>
+                                    <select x-model="feature.icon" :name="'features[' + index + '][icon]'"
+                                            class="w-full px-3 py-2 rounded-lg bg-dermond-nav border border-white/10 text-sm text-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20">
+                                        <template x-for="icon in icons" :key="icon.value">
+                                            <option :value="icon.value" x-text="icon.label" :selected="feature.icon === icon.value"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Title *</label>
+                                    <input type="text" x-model="feature.title" :name="'features[' + index + '][title]'"
+                                           class="w-full px-3 py-2 rounded-lg bg-dermond-nav border border-white/10 text-sm text-white placeholder-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+                                           placeholder="e.g. Protection" required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Description</label>
+                                    <input type="text" x-model="feature.description" :name="'features[' + index + '][description]'"
+                                           class="w-full px-3 py-2 rounded-lg bg-dermond-nav border border-white/10 text-sm text-white placeholder-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+                                           placeholder="e.g. Daily defense against bacteria">
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div x-show="features.length === 0" class="text-center py-8 text-gray-500">
+                    <svg class="w-10 h-10 mx-auto mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <p class="text-sm">No features added yet</p>
+                </div>
+            </div>
+
             <div class="bg-dermond-card border border-white/10 rounded-2xl p-6 md:p-8">
                 <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
                     <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -174,7 +250,7 @@
                         <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $product->is_featured ?? false) ? 'checked' : '' }} class="text-amber-500 focus:ring-amber-500 border-white/20 bg-dermond-dark rounded">
                         <div class="ml-3">
                             <span class="text-sm font-medium text-gray-300">Featured Product</span>
-                            <p class="text-xs text-gray-500">Tampilkan di section "Check Another Product" homepage</p>
+                            <p class="text-xs text-gray-500">Tampilkan di section "THE ULTIMATE COLLECTION" homepage</p>
                         </div>
                     </label>
                 </div>

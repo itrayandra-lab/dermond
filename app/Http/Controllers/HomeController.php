@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Models\ExpertQuote;
 use App\Models\Product;
 use App\Models\Slider;
 use Illuminate\View\View;
@@ -15,23 +14,25 @@ class HomeController extends Controller
      */
     public function index(): View
     {
-        $sliders = Slider::with('media')
+        $sliders = Slider::with(['media', 'product.category', 'product.media'])
             ->active()
             ->orderBy('position', 'asc')
             ->orderBy('created_at', 'asc')
             ->get();
-        // Featured products for "Check Another Product" section (all featured products regardless of category)
-        $products = Product::with(['category', 'media'])
+            
+        // Featured products for "THE ULTIMATE COLLECTION" section
+        $featuredProducts = Product::with(['category', 'media'])
             ->published()
             ->featured()
             ->orderBy('created_at', 'desc')
-            ->limit(8)
+            ->limit(3)
             ->get();
 
-        // Phytosync series products (all published products)
-        $phytosyncProducts = Product::with(['category', 'media'])
+        // All published products for "PRODUCTS" section
+        $products = Product::with(['category', 'media'])
             ->published()
             ->orderBy('created_at', 'desc')
+            ->limit(6)
             ->get();
 
         // Get 2 latest articles for editorial section
@@ -48,12 +49,7 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
-        $expertQuote = ExpertQuote::query()
-            ->with('media')
-            ->active()
-            ->first();
-
-        return view('home.index', compact('sliders', 'products', 'phytosyncProducts', 'editorialArticles', 'articles', 'expertQuote'));
+        return view('home.index', compact('sliders', 'products', 'featuredProducts', 'editorialArticles', 'articles'));
     }
 
     /**

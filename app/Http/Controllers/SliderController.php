@@ -14,7 +14,7 @@ class SliderController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = Slider::with('media');
+        $query = Slider::with(['media', 'product.media']);
 
         $search = $request->string('search')->trim();
         $status = $request->string('status')->trim();
@@ -63,7 +63,9 @@ class SliderController extends Controller
      */
     public function create(): View
     {
-        return view('admin.slider.form');
+        $products = \App\Models\Product::published()->orderBy('name')->get();
+
+        return view('admin.slider.form', compact('products'));
     }
 
     /**
@@ -72,14 +74,30 @@ class SliderController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 2MB
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 2MB
             'label' => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:500',
+            'cta_text' => 'nullable|string|max:50',
+            'cta_link' => 'nullable|url|max:255',
+            'product_id' => 'nullable|exists:products,id',
+            'badge_title' => 'nullable|string|max:100',
+            'badge_subtitle' => 'nullable|string|max:100',
             'position' => 'required|integer|min:1|unique:sliders,position',
             'status' => 'required|in:draft,active,archived',
         ]);
 
         $slider = Slider::create([
             'label' => $request->label,
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
+            'description' => $request->description,
+            'cta_text' => $request->cta_text,
+            'cta_link' => $request->cta_link,
+            'product_id' => $request->product_id ?: null,
+            'badge_title' => $request->badge_title,
+            'badge_subtitle' => $request->badge_subtitle,
             'position' => $request->position,
             'status' => $request->status,
         ]);
@@ -99,8 +117,9 @@ class SliderController extends Controller
     public function edit(int $id): View
     {
         $slider = Slider::findOrFail($id);
+        $products = \App\Models\Product::published()->orderBy('name')->get();
 
-        return view('admin.slider.form', compact('slider'));
+        return view('admin.slider.form', compact('slider', 'products'));
     }
 
     /**
@@ -113,11 +132,31 @@ class SliderController extends Controller
         $request->validate([
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 2MB
             'label' => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:500',
+            'cta_text' => 'nullable|string|max:50',
+            'cta_link' => 'nullable|url|max:255',
+            'product_id' => 'nullable|exists:products,id',
+            'badge_title' => 'nullable|string|max:100',
+            'badge_subtitle' => 'nullable|string|max:100',
             'position' => 'required|integer|min:1|unique:sliders,position,'.$slider->id,
             'status' => 'required|in:draft,active,archived',
         ]);
 
-        $sliderData = $request->only(['label', 'position', 'status']);
+        $sliderData = [
+            'label' => $request->label,
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
+            'description' => $request->description,
+            'cta_text' => $request->cta_text,
+            'cta_link' => $request->cta_link,
+            'product_id' => $request->product_id ?: null,
+            'badge_title' => $request->badge_title,
+            'badge_subtitle' => $request->badge_subtitle,
+            'position' => $request->position,
+            'status' => $request->status,
+        ];
 
         $slider->update($sliderData);
 
