@@ -46,7 +46,7 @@
                 <a href="{{ route('articles.index') }}" class="hover:text-blue-500 transition-colors">BLOG</a>
                 <a href="{{ route('products.index') }}" class="hover:text-blue-500 transition-colors">PRODUCTS</a>
                 <a href="#features" class="hover:text-blue-500 transition-colors">WHY US</a>
-                <a href="#contact" class="hover:text-blue-500 transition-colors">CONTACT</a>
+                <a href="{{ route('contact') }}" class="hover:text-blue-500 transition-colors">CONTACT</a>
             </div>
 
             {{-- Actions --}}
@@ -113,7 +113,7 @@
             <a href="{{ route('articles.index') }}" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">BLOG</a>
             <a href="{{ route('products.index') }}" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">PRODUCTS</a>
             <a href="#features" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">WHY US</a>
-            <a href="#contact" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">CONTACT</a>
+            <a href="{{ route('contact') }}" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">CONTACT</a>
 
             @guest
             <a href="{{ route('login') }}" class="mt-4 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase tracking-widest hover:bg-blue-700 w-full text-center">

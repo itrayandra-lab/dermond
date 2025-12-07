@@ -18,47 +18,6 @@
             </p>
         </div>
 
-        {{-- Category Filter --}}
-        <div class="mb-16" x-data="{ scrollContainer: null }" x-init="scrollContainer = $refs.categoryScroll">
-            <div class="relative max-w-5xl mx-auto px-4 md:px-12">
-                {{-- Left Arrow --}}
-                <button @click="scrollContainer?.scrollBy({ left: -300, behavior: 'smooth' })"
-                        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-white transition-all duration-300 hidden md:flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </button>
-
-                {{-- Category Buttons Container --}}
-                <div x-ref="categoryScroll" class="flex gap-4 overflow-x-auto hide-scrollbar scroll-smooth justify-center">
-                    <a href="{{ route('products.index') }}"
-                       class="flex-shrink-0 px-8 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 border whitespace-nowrap
-                              {{ !request()->get('category')
-                                  ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/30'
-                                  : 'bg-white/5 border-white/10 text-gray-400 hover:border-blue-500/50 hover:text-blue-400' }}">
-                        All Products
-                    </a>
-                    @foreach($categories as $category)
-                        <a href="{{ route('products.index', ['category' => $category->id]) }}"
-                           class="flex-shrink-0 px-8 py-3 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 border whitespace-nowrap
-                                  {{ request()->get('category') == $category->id
-                                      ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/30'
-                                      : 'bg-white/5 border-white/10 text-gray-400 hover:border-blue-500/50 hover:text-blue-400' }}">
-                            {{ $category->name }}
-                        </a>
-                    @endforeach
-                </div>
-
-                {{-- Right Arrow --}}
-                <button @click="scrollContainer?.scrollBy({ left: 300, behavior: 'smooth' })"
-                        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-gray-400 hover:text-white transition-all duration-300 hidden md:flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
         {{-- Products Grid --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16" x-data="productLoader()" x-init="init()">
             @forelse($products as $product)

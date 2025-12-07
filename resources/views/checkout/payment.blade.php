@@ -1,36 +1,36 @@
 @extends('layouts.app')
 
-@section('title', 'Pembayaran - Beautylatory')
+@section('title', 'Pembayaran - Dermond')
 
 @section('content')
-    <div class="pt-28 pb-20 bg-gray-50 min-h-screen">
-        <div class="container mx-auto px-6 md:px-8 max-w-4xl">
-            <div class="mb-8 text-center">
-                <p class="text-xs font-bold tracking-widest text-primary uppercase mb-2">Pembayaran</p>
-                <h1 class="text-4xl font-display font-medium text-gray-900">Selesaikan Pembayaran</h1>
+    <div class="pt-32 pb-20 px-6 min-h-screen bg-dermond-dark">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <span class="text-blue-500 font-bold italic tracking-widest text-sm uppercase mb-2 block">Pembayaran</span>
+                <h1 class="text-4xl font-black text-white">Selesaikan Pembayaran</h1>
                 <p class="text-gray-500 mt-2">Order: {{ $order->order_number }}</p>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
-                <div class="flex items-center justify-between">
+            <div class="bg-dermond-card border border-white/10 rounded-2xl p-6 space-y-6">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div>
                         <p class="text-sm text-gray-500">Total Pembayaran</p>
-                        <p class="text-3xl font-display font-medium text-gray-900">Rp {{ number_format($order->total, 0, ',', '.') }}</p>
+                        <p class="text-3xl font-black text-white">Rp {{ number_format($order->total, 0, ',', '.') }}</p>
                     </div>
                     @if($snapToken)
                         <button id="pay-button"
-                                class="bg-gray-900 text-white px-6 py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-primary transition-all duration-300">
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded font-bold transition-all hover:-translate-y-1 shadow-lg shadow-blue-900/20">
                             Bayar Sekarang
                         </button>
                     @else
-                        <span class="text-sm text-rose-600">Token pembayaran tidak tersedia. Silakan ulangi checkout.</span>
+                        <span class="text-sm text-red-400">Token pembayaran tidak tersedia. Silakan ulangi checkout.</span>
                     @endif
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/10">
                     <div>
-                        <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">Alamat</p>
-                        <p>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest mb-2">Alamat Pengiriman</p>
+                        <p class="text-gray-300 text-sm">
                             {{ $order->shipping_address }},
                             {{ $order->shipping_village ? $order->shipping_village.', ' : '' }}
                             {{ $order->shipping_district ? $order->shipping_district.', ' : '' }}
@@ -38,15 +38,15 @@
                         </p>
                     </div>
                     <div>
-                        <p class="text-gray-500 text-xs uppercase tracking-widest mb-1">Kontak</p>
-                        <p>{{ $order->phone }}</p>
-                        <p>{{ $order->user?->email }}</p>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest mb-2">Kontak</p>
+                        <p class="text-gray-300 text-sm">{{ $order->phone }}</p>
+                        <p class="text-gray-300 text-sm">{{ $order->user?->email }}</p>
                     </div>
                 </div>
 
-                <div class="text-xs text-gray-500">
+                <p class="text-xs text-gray-500">
                     Snap by Midtrans akan muncul sebagai popup. Jangan tutup halaman ini sampai pembayaran selesai.
-                </div>
+                </p>
             </div>
         </div>
     </div>

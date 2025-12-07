@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'Alamat Saya - Beautylatory')
+@section('title', 'Alamat Saya - Dermond')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen pt-24 pb-16">
+<div class="bg-dermond-dark min-h-screen pt-24 pb-16">
     <div class="container mx-auto px-6 md:px-8 max-w-4xl">
         <div class="mb-8">
-            <a href="{{ route('customer.dashboard') }}" class="text-xs font-bold tracking-widest text-primary uppercase hover:text-primary-dark mb-2 inline-block">&larr; Kembali ke Dashboard</a>
-            <p class="text-xs font-bold tracking-[0.2em] text-primary uppercase">Alamat</p>
-            <h1 class="text-4xl font-display font-medium text-gray-900 mt-2">Alamat Tersimpan</h1>
-            <p class="text-gray-500 mt-2">Kelola alamat pengiriman untuk checkout lebih cepat.</p>
+            <a href="{{ route('customer.dashboard') }}" class="text-xs font-bold tracking-widest text-blue-400 uppercase hover:text-blue-300 mb-2 inline-block">&larr; Kembali ke Dashboard</a>
+            <p class="text-xs font-bold tracking-[0.2em] text-blue-400 uppercase">Alamat</p>
+            <h1 class="text-4xl font-bold text-white mt-2">Alamat Tersimpan</h1>
+            <p class="text-gray-400 mt-2">Kelola alamat pengiriman untuk checkout lebih cepat.</p>
         </div>
 
         @if (session('success'))
-            <div class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-4 py-3 rounded-xl mb-6">
+            <div class="bg-green-900/30 border border-green-500/30 text-green-400 px-4 py-3 rounded-xl mb-6">
                 {{ session('success') }}
             </div>
         @endif
 
         <div id="addresses-container" class="space-y-4 mb-6">
             @forelse($addresses as $address)
-                <div class="address-card bg-white rounded-2xl shadow-sm border border-gray-100 p-6 {{ $address->is_default ? 'ring-2 ring-primary' : '' }}" data-id="{{ $address->id }}">
+                <div class="address-card bg-dermond-card border border-white/10 rounded-2xl p-6 {{ $address->is_default ? 'ring-2 ring-blue-500' : '' }}" data-id="{{ $address->id }}">
                     <div class="flex items-start justify-between">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-2">
@@ -28,31 +28,31 @@
                                     <span class="text-xs font-bold tracking-widest text-gray-500 uppercase">{{ $address->label }}</span>
                                 @endif
                                 @if($address->is_default)
-                                    <span class="bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase px-2 py-1 rounded">Utama</span>
+                                    <span class="bg-blue-900/30 text-blue-400 text-xs font-bold tracking-widest uppercase px-2 py-1 rounded">Utama</span>
                                 @endif
                             </div>
-                            <p class="font-semibold text-gray-900">{{ $address->recipient_name }}</p>
-                            <p class="text-gray-600">{{ $address->phone }}</p>
-                            <p class="text-gray-600 mt-2">{{ $address->full_address }}</p>
+                            <p class="font-semibold text-white">{{ $address->recipient_name }}</p>
+                            <p class="text-gray-400">{{ $address->phone }}</p>
+                            <p class="text-gray-400 mt-2">{{ $address->full_address }}</p>
                         </div>
                         <div class="flex items-center gap-2 ml-4">
                             @unless($address->is_default)
-                                <button type="button" onclick="setDefault({{ $address->id }})" class="text-xs font-bold tracking-widest text-gray-500 uppercase hover:text-primary">Jadikan Utama</button>
+                                <button type="button" onclick="setDefault({{ $address->id }})" class="text-xs font-bold tracking-widest text-gray-500 uppercase hover:text-blue-400">Jadikan Utama</button>
                             @endunless
-                            <button type="button" onclick="editAddress({{ $address->id }})" class="text-xs font-bold tracking-widest text-primary uppercase hover:text-primary-dark">Edit</button>
-                            <button type="button" onclick="deleteAddress({{ $address->id }})" class="text-xs font-bold tracking-widest text-rose-600 uppercase hover:text-rose-700">Hapus</button>
+                            <button type="button" onclick="editAddress({{ $address->id }})" class="text-xs font-bold tracking-widest text-blue-400 uppercase hover:text-blue-300">Edit</button>
+                            <button type="button" onclick="deleteAddress({{ $address->id }})" class="text-xs font-bold tracking-widest text-red-400 uppercase hover:text-red-300">Hapus</button>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
-                    <p class="text-gray-500">Belum ada alamat tersimpan.</p>
+                <div class="bg-dermond-card border border-white/10 rounded-2xl p-8 text-center">
+                    <p class="text-gray-400">Belum ada alamat tersimpan.</p>
                 </div>
             @endforelse
         </div>
 
         @if($addresses->count() < $maxAddresses)
-            <button type="button" onclick="openAddModal()" class="w-full bg-gray-900 text-white py-4 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-primary transition-all duration-300">
+            <button type="button" onclick="openAddModal()" class="w-full bg-blue-600 text-white py-4 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-blue-500 transition-all">
                 + Tambah Alamat Baru
             </button>
         @else
@@ -62,39 +62,39 @@
 </div>
 
 <!-- Address Modal -->
-<div id="address-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div class="p-6 border-b border-gray-100">
-            <h2 id="modal-title" class="text-2xl font-display font-medium text-gray-900">Tambah Alamat</h2>
+<div id="address-modal" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center p-4">
+    <div class="bg-dermond-card border border-white/10 rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-white/10">
+            <h2 id="modal-title" class="text-2xl font-bold text-white">Tambah Alamat</h2>
         </div>
         <form id="address-form" class="p-6 space-y-4">
             <input type="hidden" id="address-id" value="">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Label (Opsional)</label>
-                    <input type="text" id="label" placeholder="Rumah, Kantor, dll" class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Label (Opsional)</label>
+                    <input type="text" id="label" placeholder="Rumah, Kantor, dll" class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Nama Penerima</label>
-                    <input type="text" id="recipient_name" required class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Nama Penerima</label>
+                    <input type="text" id="recipient_name" required class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-800 mb-2">Nomor Telepon</label>
-                <input type="text" id="phone" required class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                <label class="block text-sm font-semibold text-gray-300 mb-2">Nomor Telepon</label>
+                <input type="text" id="phone" required class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-800 mb-2">Alamat Lengkap</label>
-                <textarea id="address" rows="2" required class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                <label class="block text-sm font-semibold text-gray-300 mb-2">Alamat Lengkap</label>
+                <textarea id="address" rows="2" required class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Provinsi</label>
-                    <select id="province_code" required class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent bg-white">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Provinsi</label>
+                    <select id="province_code" required class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="">Pilih provinsi</option>
                         @foreach($provinces as $province)
                             <option value="{{ $province->code }}" data-name="{{ $province->name }}">{{ $province->name }}</option>
@@ -102,8 +102,8 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Kota/Kabupaten</label>
-                    <select id="city_code" required disabled class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent bg-white">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Kota/Kabupaten</label>
+                    <select id="city_code" required disabled class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50">
                         <option value="">Pilih kota/kabupaten</option>
                     </select>
                 </div>
@@ -111,14 +111,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Kecamatan</label>
-                    <select id="district_code" required disabled class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent bg-white">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Kecamatan</label>
+                    <select id="district_code" required disabled class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50">
                         <option value="">Pilih kecamatan</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Kelurahan/Desa</label>
-                    <select id="village_code" required disabled class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent bg-white">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Kelurahan/Desa</label>
+                    <select id="village_code" required disabled class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50">
                         <option value="">Pilih kelurahan/desa</option>
                     </select>
                 </div>
@@ -126,25 +126,26 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-800 mb-2">Kode Pos</label>
-                    <input type="text" id="postal_code" required class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Kode Pos</label>
+                    <input type="text" id="postal_code" required class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
                 <div class="flex items-center pt-8">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="is_default" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary">
-                        <span class="text-sm font-semibold text-gray-800">Jadikan alamat utama</span>
+                        <input type="checkbox" id="is_default" class="w-5 h-5 rounded border-white/20 bg-dermond-dark text-blue-500 focus:ring-blue-500">
+                        <span class="text-sm font-semibold text-gray-300">Jadikan alamat utama</span>
                     </label>
                 </div>
             </div>
 
             <div class="flex gap-3 pt-4">
-                <button type="button" onclick="closeModal()" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-gray-200 transition-all">Batal</button>
-                <button type="submit" id="submit-btn" class="flex-1 bg-gray-900 text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-primary transition-all">Simpan</button>
+                <button type="button" onclick="closeModal()" class="flex-1 bg-dermond-dark border border-white/10 text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:border-blue-500/50 hover:bg-blue-900/20 transition-colors">Batal</button>
+                <button type="submit" id="submit-btn" class="flex-1 bg-blue-600 text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-blue-500 transition-all">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 @endsection
+
 
 @section('scripts')
 <script>

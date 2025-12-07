@@ -126,3 +126,76 @@
 
 -   `temp/dermond-intimate-care (1)/src/pages/` - HomePage, BlogPage, ProductDetailPage
 -   `temp/dermond-intimate-care (1)/components/` - BlogCard, ProductShowcase, Hero
+-   `temp/dermond-intimate-care (1)/STYLE_GUIDE.md` - Comprehensive design system documentation
+
+## Styling Patterns (Learned)
+
+### Dark Theme Form Elements
+
+```blade
+{{-- Input/Select --}}
+class="w-full rounded-xl bg-dermond-dark border border-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+
+{{-- Checkbox --}}
+class="w-4 h-4 rounded border-white/20 bg-dermond-dark text-blue-500 focus:ring-blue-500"
+```
+
+### Dark Theme Cards/Panels
+
+```blade
+{{-- Card --}}
+class="bg-dermond-card border border-white/10 rounded-2xl p-6"
+
+{{-- Selected State --}}
+class="border-blue-500/50 bg-blue-900/20"
+
+{{-- Hover State --}}
+class="hover:border-blue-500/50 transition-colors"
+```
+
+### Alert/Message Boxes
+
+```blade
+{{-- Success --}}
+class="bg-green-900/30 text-green-400 border border-green-500/30"
+
+{{-- Error --}}
+class="bg-red-900/30 text-red-400 border border-red-500/30"
+
+{{-- Warning/Pending --}}
+class="bg-yellow-900/30 text-yellow-400 border border-yellow-500/30"
+```
+
+### Text Formatting
+
+-   Long descriptions: use `whitespace-pre-line` to preserve line breaks
+-   NEVER use `text-align: justify` on long text - causes readability issues
+-   Use `text-lg` or `text-base` for body text, not `text-xl`
+
+### Email Templates
+
+-   Located in `resources/views/emails/`
+-   Use inline CSS only (email clients don't support external CSS/Tailwind)
+-   Dark theme colors: `#050a14` (body bg), `#0f172a` (card bg), `#0a1226` (nav/footer)
+-   Blue accent: `#2563eb`, `#3b82f6`
+-   Text: `#ffffff` (headings), `#e2e8f0` (body), `#94a3b8` (muted), `#64748b` (labels)
+
+## Conversion Status
+
+### ✅ Customer-Facing Pages (All Dark Theme)
+
+-   Homepage, Header, Footer, Floating Chat
+-   Products (index, show, card)
+-   Articles (index, show, category, card)
+-   Cart (index, cart-item)
+-   Checkout (form, payment, confirmation, pending, error)
+-   Auth (login, register)
+-   Customer (dashboard, profile/show, profile/edit)
+-   Orders (index, show)
+-   Addresses (index)
+-   Contact, Terms
+-   Email templates (5 files)
+
+### ⚠️ Not Converted
+
+-   `resources/views/admin/` - Admin panel (lower priority, internal use)
