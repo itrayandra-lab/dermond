@@ -1,70 +1,59 @@
-# Progress: Dermond UI Conversion
+# Progress: Dermond Admin Panel Dark Theme Conversion
 
 ## Current Objective
 
-Convert all Blade pages from Beautylatory light theme to Dermond dark theme.
+Convert admin panel Blade views from Beautylatory light theme to Dermond dark theme with blue accents.
 
 ## Status Snapshot
 
-### ✅ Completed (Verified)
+### ✅ Completed (All Batches)
 
--   Homepage (`resources/views/home/index.blade.php`)
--   Header/Footer components
--   Floating chat component
--   Blog pages (`resources/views/articles/index.blade.php`, `show.blade.php`, `category.blade.php`)
--   Article card component
--   Products pages (`resources/views/products/index.blade.php`, `show.blade.php`)
--   Product card component
--   Cart (`resources/views/cart/index.blade.php`, `components/cart-item.blade.php`)
--   Checkout (`form.blade.php`, `payment.blade.php`, `confirmation.blade.php`, `pending.blade.php`, `error.blade.php`)
--   Auth (`resources/views/auth/login.blade.php`, `register.blade.php`)
--   Customer dashboard (`resources/views/customer/dashboard.blade.php`)
--   Customer profile (`resources/views/customer/profile/show.blade.php`, `edit.blade.php`)
--   Orders (`resources/views/orders/index.blade.php`, `show.blade.php`)
--   Addresses (`resources/views/account/addresses/index.blade.php`)
--   Contact page (`resources/views/home/contact.blade.php`)
--   Terms page (`resources/views/home/terms.blade.php`)
--   Email templates (all 5 in `resources/views/emails/`)
--   Header CONTACT link updated to `route('contact')`
--   `npm run build` successful
--   `vendor/bin/pint --dirty` clean
--   `STYLE_GUIDE.md` copied to `docs/`
+**Batch 1 (Core):**
 
-### ⚠️ Still Beautylatory (Untouched)
+-   `resources/views/admin/layouts/app.blade.php`
+-   `resources/views/admin/dashboard.blade.php`
+-   `resources/views/admin/orders/index.blade.php`, `show.blade.php`
+-   `resources/views/admin/products/index.blade.php`, `form.blade.php`, `trash.blade.php`
+-   `resources/views/admin/articles/index.blade.php`, `form.blade.php`, `show.blade.php`
+-   `resources/views/admin/profile/show.blade.php`, `edit.blade.php`
 
--   `resources/views/admin/` - Entire admin panel (lower priority)
+**Batch 2 (Medium Priority):**
+
+-   `resources/views/admin/users/index.blade.php`, `form.blade.php`
+-   `resources/views/admin/vouchers/index.blade.php`, `form.blade.php`
+-   `resources/views/admin/contact-messages/index.blade.php`, `show.blade.php`
+
+**Batch 3 (Lower Priority):**
+
+-   `resources/views/admin/categories/index.blade.php`, `form.blade.php`
+-   `resources/views/admin/article-categories/index.blade.php`, `form.blade.php`
+-   `resources/views/admin/slider/index.blade.php`, `form.blade.php`
+-   `resources/views/admin/site-settings/index.blade.php`
+-   `resources/views/admin/chatbot/settings.blade.php`
+
+### ⏭️ Skipped (Per User Request)
+
+-   `resources/views/admin/expert-quotes/create.blade.php`, `edit.blade.php`, `form.blade.php`
+
+### 🗑️ Deleted
+
+-   `resources/views/admin/auth/login.blade.php` - Auth is unified at `/login`
 
 ## Critical Learnings
 
--   Email templates use inline CSS (no Tailwind) - converted to dark colors manually
--   Product descriptions need `whitespace-pre-line` to preserve line breaks
--   Dark theme form elements: `bg-dermond-dark border border-white/10 text-white`
--   Selected state: `border-blue-500/50 bg-blue-900/20`
--   Alert boxes: `bg-{color}-900/30 text-{color}-400 border border-{color}-500/30`
+-   Admin auth unified with customer auth at `/login` route
+-   Rose accent → Blue accent for Dermond brand
+-   `glass-panel` → `bg-dermond-card border border-white/10`
+-   `bg-white/50` → `bg-dermond-dark` or `bg-white/5`
+-   `text-gray-900` → `text-white`
+-   `hover:bg-rose-50` → `hover:bg-white/5` or `hover:bg-blue-500/10`
+-   Status badges: `{color}-500/10` bg, `{color}-400` text, `{color}-500/20` border
 
-## Active Context (Modified This Session)
+## Verification
 
--   `resources/views/auth/login.blade.php`
--   `resources/views/auth/register.blade.php`
--   `resources/views/customer/dashboard.blade.php`
--   `resources/views/customer/profile/show.blade.php`
--   `resources/views/customer/profile/edit.blade.php`
--   `resources/views/orders/index.blade.php`
--   `resources/views/orders/show.blade.php`
--   `resources/views/account/addresses/index.blade.php`
--   `resources/views/home/contact.blade.php`
--   `resources/views/home/terms.blade.php`
--   `resources/views/articles/category.blade.php`
--   `resources/views/emails/contact-message.blade.php`
--   `resources/views/emails/new-order-notification.blade.php`
--   `resources/views/emails/order-created.blade.php`
--   `resources/views/emails/order-failed.blade.php`
--   `resources/views/emails/order-paid.blade.php`
--   `resources/views/components/header.blade.php` (CONTACT link)
--   `docs/STYLE_GUIDE.md` (copied from temp)
+-   `npm run build` ✅ - No errors
+-   `vendor/bin/pint --dirty` ✅ - No files to fix
 
 ## Immediate Next Steps
 
-1. Visual verification with `composer run dev`
-2. (Optional) Convert admin panel to dark theme if needed
-3. Update CHANGELOG.md with UI conversion summary
+1. (Optional) Convert expert-quotes if needed later

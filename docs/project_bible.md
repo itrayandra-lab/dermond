@@ -196,6 +196,83 @@ class="bg-yellow-900/30 text-yellow-400 border border-yellow-500/30"
 -   Contact, Terms
 -   Email templates (5 files)
 
-### ⚠️ Not Converted
+### ✅ Admin Panel (Converted to Dark Theme)
 
--   `resources/views/admin/` - Admin panel (lower priority, internal use)
+-   `admin/layouts/app.blade.php` - Master layout (sidebar dark, blue accent)
+-   `admin/dashboard.blade.php` - Stats cards, quick actions
+-   `admin/orders/index.blade.php`, `show.blade.php` - Order management
+-   `admin/products/index.blade.php`, `form.blade.php`, `trash.blade.php` - Product CRUD
+-   `admin/articles/index.blade.php`, `form.blade.php`, `show.blade.php` - Article CRUD
+-   `admin/profile/show.blade.php`, `edit.blade.php` - Admin profile
+
+### 🗑️ Deleted (Unused)
+
+-   `admin/auth/login.blade.php` - Auth is unified at `/login` for all users
+
+### ⏭️ Admin Panel (Skipped - Light Theme)
+
+-   `admin/expert-quotes/` - create, edit, form (3 files) - skipped per user request
+
+## Admin Panel Styling Patterns
+
+### Layout Structure
+
+```blade
+{{-- Body --}}
+class="bg-dermond-dark text-dermond-text"
+
+{{-- Sidebar --}}
+class="bg-dermond-nav border-r border-white/5"
+
+{{-- Active nav item --}}
+class="bg-gradient-to-r from-blue-500/10 to-transparent text-blue-400 border-l-2 border-blue-500"
+
+{{-- Main content area --}}
+class="lg:pl-72 bg-dermond-dark"
+```
+
+### Admin Table Pattern
+
+```blade
+{{-- Table container --}}
+class="bg-dermond-card border border-white/10 rounded-2xl overflow-hidden"
+
+{{-- Table header --}}
+class="border-b border-white/10 bg-white/5"
+class="text-xs font-bold text-gray-500 uppercase tracking-widest"
+
+{{-- Table row hover --}}
+class="hover:bg-white/5 transition-colors"
+
+{{-- Table dividers --}}
+class="divide-y divide-white/5"
+```
+
+### Admin Form Pattern
+
+```blade
+{{-- Form card --}}
+class="bg-dermond-card border border-white/10 rounded-2xl p-6 md:p-8"
+
+{{-- Input --}}
+class="bg-dermond-dark border border-white/10 rounded-xl text-white placeholder-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+
+{{-- Select --}}
+class="bg-dermond-dark border border-white/10 rounded-xl text-gray-300 appearance-none"
+
+{{-- Radio/Checkbox selected state --}}
+class="bg-blue-500/10 border-blue-500/30"
+```
+
+### Admin Button Pattern
+
+```blade
+{{-- Primary --}}
+class="bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold uppercase tracking-wider text-xs shadow-lg shadow-blue-900/30"
+
+{{-- Secondary --}}
+class="bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-white/20 rounded-xl"
+
+{{-- Action icon --}}
+class="w-10 h-10 rounded-xl text-gray-400 hover:text-blue-400 hover:bg-blue-500/10"
+```

@@ -3,97 +3,87 @@
 @section('title', $article->title)
 
 @section('content')
-<div class="p-6 max-w-4xl mx-auto">
+<div class="max-w-4xl mx-auto">
     <div class="mb-6 flex justify-between items-start">
         <div>
-            <h1 class="text-3xl font-bold text-text-primary">{{ $article->title }}</h1>
-            <p class="text-text-secondary mt-1">Published {{ $article->published_at?->diffForHumans() ?? 'Not published' }}</p>
+            <h1 class="text-3xl font-bold text-white">{{ $article->title }}</h1>
+            <p class="text-gray-400 mt-1">Published {{ $article->published_at?->diffForHumans() ?? 'Not published' }}</p>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('admin.articles.edit', $article) }}" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-xl transition-colors">
+            <a href="{{ route('admin.articles.edit', $article) }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-sm font-bold transition-colors">
                 Edit
             </a>
-            <a href="{{ route('admin.articles.index') }}" class="bg-gray-200 hover:bg-gray-300 text-text-primary px-4 py-2 rounded-xl transition-colors">
+            <a href="{{ route('admin.articles.index') }}" class="px-4 py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 rounded-xl text-sm font-bold transition-colors">
                 Back
             </a>
         </div>
     </div>
 
     <div class="space-y-6">
-        <!-- Meta Info -->
-        <div class="bg-white rounded-2xl shadow-sm p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-dermond-card border border-white/10 rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-                <div class="text-xs text-text-muted uppercase">Status</div>
+                <div class="text-xs text-gray-500 uppercase">Status</div>
                 <div class="mt-1">
                     @if($article->status === 'published')
-                        <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-success/10 text-success">Published</span>
+                        <span class="px-2 py-1 text-xs font-bold rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Published</span>
                     @elseif($article->status === 'scheduled')
-                        <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-warning/10 text-warning">Scheduled</span>
+                        <span class="px-2 py-1 text-xs font-bold rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">Scheduled</span>
                     @else
-                        <span class="px-2 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-text-muted">Draft</span>
+                        <span class="px-2 py-1 text-xs font-bold rounded-lg bg-gray-500/10 text-gray-400 border border-gray-500/20">Draft</span>
                     @endif
                 </div>
             </div>
             <div>
-                <div class="text-xs text-text-muted uppercase">Author</div>
-                <div class="mt-1 text-sm text-text-primary">{{ $article->display_author }}</div>
+                <div class="text-xs text-gray-500 uppercase">Author</div>
+                <div class="mt-1 text-sm text-white">{{ $article->display_author }}</div>
             </div>
             <div>
-                <div class="text-xs text-text-muted uppercase">Views</div>
-                <div class="mt-1 text-sm text-text-primary">{{ number_format($article->views_count) }}</div>
+                <div class="text-xs text-gray-500 uppercase">Views</div>
+                <div class="mt-1 text-sm text-white">{{ number_format($article->views_count) }}</div>
             </div>
             <div>
-                <div class="text-xs text-text-muted uppercase">Created</div>
-                <div class="mt-1 text-sm text-text-primary">{{ $article->created_at->format('M d, Y') }}</div>
+                <div class="text-xs text-gray-500 uppercase">Created</div>
+                <div class="mt-1 text-sm text-white">{{ $article->created_at->format('M d, Y') }}</div>
             </div>
         </div>
 
-        <!-- Thumbnail -->
         @if($article->hasImage())
-            <div class="bg-white rounded-2xl shadow-sm p-6">
-                <h2 class="text-lg font-semibold text-text-primary mb-3">Thumbnail</h2>
+            <div class="bg-dermond-card border border-white/10 rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-white mb-3">Thumbnail</h2>
                 <img src="{{ $article->getImageUrl() }}" alt="{{ $article->title }}" class="w-full h-64 object-cover rounded-xl">
             </div>
         @endif
 
-        <!-- Excerpt -->
         @if($article->excerpt)
-            <div class="bg-white rounded-2xl shadow-sm p-6">
-                <h2 class="text-lg font-semibold text-text-primary mb-3">Excerpt</h2>
-                <p class="text-text-secondary">{{ $article->excerpt }}</p>
+            <div class="bg-dermond-card border border-white/10 rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-white mb-3">Excerpt</h2>
+                <p class="text-gray-400">{{ $article->excerpt }}</p>
             </div>
         @endif
 
-        <!-- Content -->
-        <div class="bg-white rounded-2xl shadow-sm p-6">
-            <h2 class="text-lg font-semibold text-text-primary mb-3">Content</h2>
-            <div class="prose prose-lg max-w-none prose-headings:text-text-primary prose-p:text-text-secondary prose-strong:text-text-primary prose-em:text-text-secondary prose-a:text-primary hover:prose-a:text-primary-dark prose-ul:text-text-secondary prose-ol:text-text-secondary">
+        <div class="bg-dermond-card border border-white/10 rounded-2xl p-6">
+            <h2 class="text-lg font-bold text-white mb-3">Content</h2>
+            <div class="prose prose-lg prose-invert max-w-none">
                 <x-rich-text::styles />
                 @include('rich-text-laravel::content', ['content' => $article->body])
             </div>
         </div>
 
-        <!-- Categories -->
-        <div class="bg-white rounded-2xl shadow-sm p-6">
-            <h2 class="text-lg font-semibold text-text-primary mb-3">Categories</h2>
+        <div class="bg-dermond-card border border-white/10 rounded-2xl p-6">
+            <h2 class="text-lg font-bold text-white mb-3">Categories</h2>
             <div class="flex flex-wrap gap-2">
                 @foreach($article->categories as $category)
-                    <span class="px-3 py-1 text-sm rounded-lg bg-secondary/10 text-secondary">
-                        {{ $category->name }}
-                    </span>
+                    <span class="px-3 py-1 text-sm rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">{{ $category->name }}</span>
                 @endforeach
             </div>
         </div>
 
-        <!-- Tags -->
         @if($article->tags->isNotEmpty())
-            <div class="bg-white rounded-2xl shadow-sm p-6">
-                <h2 class="text-lg font-semibold text-text-primary mb-3">Tags</h2>
+            <div class="bg-dermond-card border border-white/10 rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-white mb-3">Tags</h2>
                 <div class="flex flex-wrap gap-2">
                     @foreach($article->tags as $tag)
-                        <span class="px-3 py-1 text-sm rounded-lg bg-primary/10 text-primary">
-                            #{{ $tag->name }}
-                        </span>
+                        <span class="px-3 py-1 text-sm rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">#{{ $tag->name }}</span>
                     @endforeach
                 </div>
             </div>
