@@ -38,5 +38,5 @@ return [
     | Default Payment Gateway
     |--------------------------------------------------------------------------
     */
-    'default_gateway' => env('PAYMENT_GATEWAY', 'midtrans'),
+    'default_gateway' => env('PAYMENT_GATEWAY', 'xendit'),
 ];

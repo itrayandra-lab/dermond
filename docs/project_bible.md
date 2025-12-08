@@ -33,10 +33,10 @@
 
 ### Payment Gateways
 
--   **Midtrans** - Snap popup integration (default)
--   **Xendit** - Payment Links / Invoice API (redirect flow)
--   Switch via `PAYMENT_GATEWAY` env var (`midtrans` or `xendit`)
--   Both implement `PaymentGatewayInterface`
+-   **Xendit** - Payment Links / Invoice API (redirect flow) — default and only active gateway
+-   `PAYMENT_GATEWAY` defaults to `xendit`; binding resolves to `XenditService`
+-   Historical Midtrans code exists but is unused; do not reintroduce Snap/popup flow without approval
+-   Both gateways implement `PaymentGatewayInterface` (factory retained for compatibility)
 -   Factory pattern: `PaymentGatewayFactory::make()`
 
 ## Architecture & Patterns
@@ -108,6 +108,7 @@
 -   NEVER decrement stock with simple `decrement()` - use atomic update with WHERE clause to prevent race conditions
 -   ALWAYS check idempotency in webhooks - skip processing if `payment_status` is already final (`paid`, `failed`, `expired`, `refunded`)
 -   ALWAYS verify webhook signatures/tokens before processing
+-   Default gateway is Xendit; bind `PaymentGatewayInterface` to `XenditService` and render payment buttons via `payment_url` (no Midtrans Snap flow)
 
 ### Tailwind v4
 

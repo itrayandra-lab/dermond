@@ -123,7 +123,7 @@ class CheckoutController extends Controller
                 'user_id' => $user->id,
                 'status' => 'pending_payment',
                 'payment_status' => 'unpaid',
-                'payment_gateway' => config('cart.default_gateway', 'midtrans'),
+                'payment_gateway' => 'xendit',
                 'subtotal' => $subtotal,
                 'shipping_cost' => $shippingCost,
                 'voucher_code' => $voucher?->code,
@@ -203,9 +203,8 @@ class CheckoutController extends Controller
         $payment = $this->gateway->createTransaction($order);
 
         $order->update([
-            'snap_token' => $payment['snap_token'] ?? null,
             'payment_url' => $payment['redirect_url'] ?? null,
-            'payment_external_id' => $order->order_number,
+            'payment_external_id' => $payment['token'] ?? $order->order_number,
         ]);
 
         // Send order created email to customer
@@ -215,46 +214,22 @@ class CheckoutController extends Controller
             // Silently fail - don't block checkout if email fails
         }
 
-        $gateway = config('cart.default_gateway', 'midtrans');
-
-        // Xendit: redirect to hosted payment page
-        if ($gateway === 'xendit') {
-            if (empty($payment['redirect_url'])) {
-                return redirect()->route('checkout.form')->with('error', 'Gagal memuat pembayaran. Silakan coba lagi.');
-            }
-
-            return redirect()->away($payment['redirect_url']);
-        }
-
-        // Midtrans: show Snap popup
-        if (empty($payment['snap_token'])) {
+        if (empty($payment['redirect_url'])) {
             return redirect()->route('checkout.form')->with('error', 'Gagal memuat pembayaran. Silakan coba lagi.');
         }
 
-        return view('checkout.payment', [
-            'order' => $order->fresh(),
-            'snapToken' => $payment['snap_token'] ?? null,
-            'snapUrl' => config('midtrans.snap_url'),
-            'clientKey' => config('midtrans.client_key'),
-        ]);
+        return redirect()->away($payment['redirect_url']);
     }
 
     public function payment(Order $order): RedirectResponse|View
     {
         $this->authorize('view', $order);
 
-        // Xendit: redirect to payment URL
-        if ($order->payment_gateway === 'xendit' && $order->payment_url) {
+        if ($order->payment_url) {
             return redirect()->away($order->payment_url);
         }
 
-        // Midtrans: show Snap popup
-        return view('checkout.payment', [
-            'order' => $order,
-            'snapToken' => $order->snap_token,
-            'snapUrl' => config('midtrans.snap_url'),
-            'clientKey' => config('midtrans.client_key'),
-        ]);
+        return redirect()->route('checkout.form')->with('error', 'Link pembayaran tidak tersedia. Silakan hubungi dukungan.');
     }
 
     public function confirmation(Order $order): View
@@ -313,7 +288,7 @@ class CheckoutController extends Controller
         $transactionStatus = $status['transaction_status'] ?? null;
         $fraudStatus = $status['fraud_status'] ?? null;
 
-        // Handle settlement status (works for both Midtrans and Xendit normalized status)
+        // Handle settlement status (normalized for Xendit)
         if (in_array($transactionStatus, ['capture', 'settlement'], true)) {
             if ($fraudStatus === 'challenge') {
                 $order->payment_status = 'unpaid';

@@ -54,22 +54,24 @@
                             <div><dt class="font-semibold text-white">External ID</dt><dd>{{ $order->payment_external_id ?? '-' }}</dd></div>
                         </dl>
 
-                        @if($order->payment_status === 'unpaid' && $order->snap_token)
-                            <div class="mt-6 pt-6 border-t border-white/10">
-                                <a href="{{ route('checkout.payment', ['order' => $order->id]) }}"
-                                   class="block w-full bg-blue-600 text-white text-center px-6 py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-blue-500 transition-all">
-                                    Bayar Sekarang
-                                </a>
-                                <p class="text-xs text-gray-500 text-center mt-2">
-                                    Klik untuk melanjutkan pembayaran melalui Midtrans
-                                </p>
-                            </div>
-                        @elseif($order->payment_status === 'unpaid' && !$order->snap_token)
-                            <div class="mt-6 pt-6 border-t border-white/10">
-                                <p class="text-xs text-red-400 text-center">
-                                    Token pembayaran tidak tersedia. Silakan hubungi customer service.
-                                </p>
-                            </div>
+                        @if($order->payment_status === 'unpaid')
+                            @if($order->payment_url)
+                                <div class="mt-6 pt-6 border-t border-white/10">
+                                    <a href="{{ $order->payment_url }}"
+                                       class="block w-full bg-blue-600 text-white text-center px-6 py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-blue-500 transition-all">
+                                        Bayar Sekarang
+                                    </a>
+                                    <p class="text-xs text-gray-500 text-center mt-2">
+                                        Klik untuk melanjutkan pembayaran melalui Xendit
+                                    </p>
+                                </div>
+                            @else
+                                <div class="mt-6 pt-6 border-t border-white/10">
+                                    <p class="text-xs text-red-400 text-center">
+                                        Link pembayaran tidak tersedia. Silakan hubungi customer service.
+                                    </p>
+                                </div>
+                            @endif
                         @endif
                     </div>
                 </div>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\PaymentGatewayInterface;
 use App\Mail\NewOrderNotificationMail;
 use App\Mail\OrderFailedMail;
 use App\Mail\OrderPaidMail;
@@ -17,81 +16,8 @@ use Illuminate\Support\Facades\Mail;
 class PaymentWebhookController extends Controller
 {
     public function __construct(
-        private PaymentGatewayInterface $gateway,
         private XenditService $xenditService,
     ) {}
-
-    public function midtrans(Request $request): JsonResponse
-    {
-        $payload = $request->all();
-
-        if (! $this->gateway->verifyNotification($payload)) {
-            Log::warning('Midtrans notification rejected: invalid signature', ['payload' => $payload]);
-
-            return response()->json(['message' => 'Invalid signature'], 400);
-        }
-
-        $data = $this->gateway->parseNotification($payload);
-        $order = Order::where('order_number', $data['order_id'] ?? null)->first();
-
-        if (! $order) {
-            Log::warning('Midtrans notification order not found', ['order_id' => $data['order_id'] ?? null]);
-
-            return response()->json(['message' => 'Order not found'], 404);
-        }
-
-        // Idempotency check - skip if already in final state
-        if (in_array($order->payment_status, ['paid', 'failed', 'expired', 'refunded'], true)) {
-            Log::info('Midtrans notification skipped: already processed', [
-                'order_id' => $order->order_number,
-                'current_status' => $order->payment_status,
-            ]);
-
-            return response()->json(['message' => 'Already processed']);
-        }
-
-        $transactionStatus = $data['transaction_status'] ?? null;
-        $fraudStatus = $data['fraud_status'] ?? null;
-
-        if (in_array($transactionStatus, ['capture', 'settlement'], true)) {
-            if ($fraudStatus === 'challenge') {
-                $order->payment_status = 'unpaid';
-                $order->status = 'pending_payment';
-            } else {
-                $order->payment_status = 'paid';
-                $order->status = $order->status === 'pending_payment' ? 'confirmed' : $order->status;
-                $order->paid_at = now();
-            }
-        } elseif ($transactionStatus === 'pending') {
-            $order->payment_status = 'unpaid';
-            $order->status = 'pending_payment';
-        } elseif (in_array($transactionStatus, ['deny', 'cancel'], true)) {
-            $order->payment_status = 'failed';
-            $order->status = 'cancelled';
-            $order->cancelled_at = now();
-            $order->restoreStock();
-        } elseif ($transactionStatus === 'expire') {
-            $order->payment_status = 'expired';
-            $order->status = 'expired';
-            $order->cancelled_at = now();
-            $order->restoreStock();
-        }
-
-        $order->payment_type = $data['payment_type'] ?? $order->payment_type;
-        $order->payment_callback_data = $payload;
-        $order->save();
-
-        // Send email notifications based on payment status
-        $this->sendEmailNotifications($order, $transactionStatus);
-
-        Log::info('Midtrans notification processed', [
-            'order_id' => $order->order_number,
-            'status' => $order->status,
-            'payment_status' => $order->payment_status,
-        ]);
-
-        return response()->json(['message' => 'OK']);
-    }
 
     public function xendit(Request $request): JsonResponse
     {

@@ -12,11 +12,15 @@
                     </svg>
                 </div>
                 <h1 class="text-3xl font-black text-white mb-3">Pembayaran Menunggu</h1>
-                <p class="text-gray-400 mb-6">Order {{ $order->order_number }} masih menunggu pembayaran. Silakan selesaikan pembayaran di Midtrans.</p>
-                <a href="{{ route('checkout.payment', ['order' => $order->id]) }}"
-                   class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded font-bold transition-all hover:-translate-y-1 shadow-lg shadow-blue-900/20">
-                    Kembali ke Pembayaran
-                </a>
+                <p class="text-gray-400 mb-6">Order {{ $order->order_number }} masih menunggu pembayaran. Silakan selesaikan pembayaran melalui Xendit.</p>
+                @if($order->payment_url)
+                    <a href="{{ $order->payment_url }}"
+                       class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded font-bold transition-all hover:-translate-y-1 shadow-lg shadow-blue-900/20">
+                        Kembali ke Pembayaran
+                    </a>
+                @else
+                    <p class="text-sm text-red-400">Link pembayaran tidak tersedia. Silakan hubungi customer service.</p>
+                @endif
             </div>
         </div>
     </div>

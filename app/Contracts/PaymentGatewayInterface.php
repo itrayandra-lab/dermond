@@ -10,7 +10,6 @@ interface PaymentGatewayInterface
      * Create a payment transaction for the given order.
      *
      * @return array{
-     *     snap_token?: string|null,
      *     redirect_url?: string|null,
      *     token?: string|null,
      * }

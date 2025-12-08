@@ -7,7 +7,7 @@ E-commerce platform for men's intimate care products. Built with Laravel 12 and 
 -   **Backend:** Laravel 12 / PHP 8.4
 -   **Frontend:** Blade, Tailwind CSS v4, Alpine.js
 -   **Database:** MySQL
--   **Payment:** Midtrans Snap
+-   **Payment:** Xendit Invoice (redirect)
 -   **Media:** Spatie Media Library
 
 ## Requirements
@@ -62,7 +62,7 @@ php artisan test --filter=TestName
 
 -   Product catalog with categories & features
 -   Shopping cart & checkout flow
--   Midtrans payment gateway integration
+-   Xendit payment gateway integration
 -   Order management with status tracking
 -   Customer account (profile, addresses, order history)
 -   Admin panel (dark theme)

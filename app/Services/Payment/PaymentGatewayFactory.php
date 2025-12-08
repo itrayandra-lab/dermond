@@ -8,12 +8,10 @@ class PaymentGatewayFactory
 {
     public function make(?string $gateway = null): PaymentGatewayInterface
     {
-        $selected = $gateway ?? config('cart.default_gateway', 'midtrans');
+        $selected = $gateway ?? config('cart.default_gateway', 'xendit');
 
         return match ($selected) {
-            'midtrans' => app(MidtransService::class),
-            'xendit' => app(XenditService::class),
-            default => app(MidtransService::class),
+            'xendit', default => app(XenditService::class),
         };
     }
 }

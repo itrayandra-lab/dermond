@@ -82,7 +82,6 @@ Route::middleware(['auth', 'customer.auth'])->group(function () {
 Route::get('/checkout/error', [CheckoutController::class, 'error'])->name('checkout.error');
 
 // Payment webhooks
-Route::post('/payment/midtrans/notification', [PaymentWebhookController::class, 'midtrans'])->name('payment.midtrans.notification');
 Route::post('/payment/xendit/notification', [PaymentWebhookController::class, 'xendit'])->name('payment.xendit.notification');
 
 // Authentication routes (unified for admin & customer)

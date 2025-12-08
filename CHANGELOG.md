@@ -8,6 +8,12 @@
 -   `XenditService` implementing `PaymentGatewayInterface`
 -   Xendit webhook endpoint at `/payment/xendit/notification`
 -   `config/xendit.php` configuration file
+
+### Fixed
+
+-   Xendit API calls now use proper `baseUrl()` in HTTP client
+-   `AppServiceProvider` binds `PaymentGatewayInterface` directly to `XenditService`
+-   Order show page now only renders Xendit payment links and fails gracefully when `payment_url` is missing
 -   Product features (JSON column) - dynamic key benefits displayed on product detail page
 -   Hybrid hero slider system - can link to products or create custom banners
 -   Hero slider shows product price with discount strikethrough
@@ -15,8 +21,9 @@
 
 ### Changed
 
--   `PaymentGatewayFactory` now supports `xendit` gateway
--   `CheckoutController` handles Xendit redirect flow (vs Midtrans popup)
+-   Midtrans routes/webhook removed; CSRF exemption now only for Xendit webhook
+-   `PaymentGatewayFactory` defaults to `xendit` gateway
+-   `CheckoutController` handles Xendit redirect flow (Midtrans popup removed)
 -   `PaymentGatewayInterface` now includes `getTransactionStatus()` method
 
 ### Fixed

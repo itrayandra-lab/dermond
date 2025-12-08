@@ -27,7 +27,7 @@ class XenditService implements PaymentGatewayInterface
         $payload = [
             'external_id' => $order->order_number,
             'amount' => $order->total,
-            'description' => 'Order #'.$order->order_number,
+            'description' => 'Order #' . $order->order_number,
             'invoice_duration' => config('xendit.invoice.duration', 86400),
             'currency' => 'IDR',
             'customer' => [
@@ -183,7 +183,7 @@ class XenditService implements PaymentGatewayInterface
     }
 
     /**
-     * Map Xendit status to Midtrans-compatible status.
+     * Map Xendit status to normalized transaction status.
      */
     private function mapStatus(?string $xenditStatus): ?string
     {
@@ -209,12 +209,12 @@ class XenditService implements PaymentGatewayInterface
 
         // Convert 08xx to +628xx
         if (str_starts_with($phone, '0')) {
-            $phone = '62'.substr($phone, 1);
+            $phone = '62' . substr($phone, 1);
         }
 
         // Add + prefix if not present
         if (! str_starts_with($phone, '+')) {
-            $phone = '+'.$phone;
+            $phone = '+' . $phone;
         }
 
         return $phone;
@@ -222,7 +222,8 @@ class XenditService implements PaymentGatewayInterface
 
     private function client(): PendingRequest
     {
-        return Http::withBasicAuth($this->secretKey, '')
+        return Http::baseUrl($this->apiUrl)
+            ->withBasicAuth($this->secretKey, '')
             ->acceptJson()
             ->asJson();
     }

@@ -54,7 +54,7 @@ class OrderSeeder extends Seeder
             'subtotal' => $subtotal,
             'shipping_cost' => 0,
             'total' => $total,
-            'payment_gateway' => config('cart.default_gateway', 'midtrans'),
+            'payment_gateway' => config('cart.default_gateway', 'xendit'),
             'payment_type' => 'bank_transfer',
             'payment_status' => 'paid',
             'shipping_address' => 'Jl. Contoh No. 123, Jakarta',
