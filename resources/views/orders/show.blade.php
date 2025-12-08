@@ -48,7 +48,6 @@
                     <div class="bg-dermond-card border border-white/10 rounded-2xl p-6">
                         <h3 class="text-lg font-semibold text-white mb-4">Pembayaran</h3>
                         <dl class="grid grid-cols-2 gap-3 text-sm text-gray-400">
-                            <div><dt class="font-semibold text-white">Gateway</dt><dd>{{ ucfirst($order->payment_gateway) }}</dd></div>
                             <div><dt class="font-semibold text-white">Metode</dt><dd>{{ $order->payment_type ?? '-' }}</dd></div>
                             <div><dt class="font-semibold text-white">Status</dt><dd>{{ ucfirst($order->payment_status) }}</dd></div>
                             <div><dt class="font-semibold text-white">External ID</dt><dd>{{ $order->payment_external_id ?? '-' }}</dd></div>
