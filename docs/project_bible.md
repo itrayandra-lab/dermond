@@ -31,6 +31,14 @@
 -   `phpunit/phpunit` v11 - testing
 -   `cviebrock/eloquent-sluggable` - product slugs
 
+### Payment Gateways
+
+-   **Midtrans** - Snap popup integration (default)
+-   **Xendit** - Payment Links / Invoice API (redirect flow)
+-   Switch via `PAYMENT_GATEWAY` env var (`midtrans` or `xendit`)
+-   Both implement `PaymentGatewayInterface`
+-   Factory pattern: `PaymentGatewayFactory::make()`
+
 ## Architecture & Patterns
 
 ### File Structure
@@ -48,6 +56,15 @@
 -   Eloquent relationships (no raw queries)
 -   Factories for test data
 -   Named routes with `route()` helper
+
+### Payment Architecture
+
+-   `app/Contracts/PaymentGatewayInterface.php` - contract
+-   `app/Services/Payment/MidtransService.php` - Midtrans implementation
+-   `app/Services/Payment/XenditService.php` - Xendit implementation
+-   `app/Services/Payment/PaymentGatewayFactory.php` - factory
+-   `config/midtrans.php`, `config/xendit.php` - gateway configs
+-   Webhook routes: `/payment/midtrans/notification`, `/payment/xendit/notification`
 
 ### Component Structure
 
@@ -85,6 +102,12 @@
 -   NEVER use raw `DB::` queries - use Eloquent
 -   ALWAYS use Form Requests for validation
 -   ALWAYS run `vendor/bin/pint --dirty` before committing
+
+### Payment & Stock (Critical)
+
+-   NEVER decrement stock with simple `decrement()` - use atomic update with WHERE clause to prevent race conditions
+-   ALWAYS check idempotency in webhooks - skip processing if `payment_status` is already final (`paid`, `failed`, `expired`, `refunded`)
+-   ALWAYS verify webhook signatures/tokens before processing
 
 ### Tailwind v4
 

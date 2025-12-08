@@ -12,6 +12,7 @@ class PaymentGatewayFactory
 
         return match ($selected) {
             'midtrans' => app(MidtransService::class),
+            'xendit' => app(XenditService::class),
             default => app(MidtransService::class),
         };
     }

@@ -4,10 +4,25 @@
 
 ### Added
 
+-   Xendit payment gateway integration (Payment Links / Invoice API)
+-   `XenditService` implementing `PaymentGatewayInterface`
+-   Xendit webhook endpoint at `/payment/xendit/notification`
+-   `config/xendit.php` configuration file
 -   Product features (JSON column) - dynamic key benefits displayed on product detail page
 -   Hybrid hero slider system - can link to products or create custom banners
 -   Hero slider shows product price with discount strikethrough
 -   Admin slider form redesigned with product-first approach
+
+### Changed
+
+-   `PaymentGatewayFactory` now supports `xendit` gateway
+-   `CheckoutController` handles Xendit redirect flow (vs Midtrans popup)
+-   `PaymentGatewayInterface` now includes `getTransactionStatus()` method
+
+### Fixed
+
+-   Race condition on stock decrement during checkout (atomic update with WHERE clause)
+-   Duplicate webhook processing (idempotency check on final payment states)
 
 ### Changed
 

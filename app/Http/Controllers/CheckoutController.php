@@ -8,6 +8,7 @@ use App\Mail\OrderCreatedMail;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\UserAddress;
 use App\Models\Voucher;
 use App\Services\VoucherService;
@@ -149,6 +150,15 @@ class CheckoutController extends Controller
             ]);
 
             foreach ($cart->items as $item) {
+                // Atomic stock decrement with race condition protection
+                $updated = Product::where('id', $item->product_id)
+                    ->where('stock', '>=', $item->quantity)
+                    ->update(['stock' => DB::raw("stock - {$item->quantity}")]);
+
+                if ($updated === 0) {
+                    throw new \RuntimeException("Stok tidak mencukupi untuk {$item->product->name}");
+                }
+
                 $orderItem = new OrderItem([
                     'product_id' => $item->product_id,
                     'product_name' => $item->product->name,
@@ -158,8 +168,6 @@ class CheckoutController extends Controller
                 ]);
 
                 $order->items()->save($orderItem);
-
-                $item->product->decrement('stock', $item->quantity);
             }
 
             $cart->clear();
@@ -200,15 +208,27 @@ class CheckoutController extends Controller
             'payment_external_id' => $order->order_number,
         ]);
 
-        if (empty($payment['snap_token'])) {
-            return redirect()->route('checkout.form')->with('error', 'Gagal memuat pembayaran. Silakan coba lagi.');
-        }
-
         // Send order created email to customer
         try {
             Mail::to($user->email)->send(new OrderCreatedMail($order->load('items', 'user')));
         } catch (\Throwable) {
             // Silently fail - don't block checkout if email fails
+        }
+
+        $gateway = config('cart.default_gateway', 'midtrans');
+
+        // Xendit: redirect to hosted payment page
+        if ($gateway === 'xendit') {
+            if (empty($payment['redirect_url'])) {
+                return redirect()->route('checkout.form')->with('error', 'Gagal memuat pembayaran. Silakan coba lagi.');
+            }
+
+            return redirect()->away($payment['redirect_url']);
+        }
+
+        // Midtrans: show Snap popup
+        if (empty($payment['snap_token'])) {
+            return redirect()->route('checkout.form')->with('error', 'Gagal memuat pembayaran. Silakan coba lagi.');
         }
 
         return view('checkout.payment', [
@@ -219,10 +239,16 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function payment(Order $order): View
+    public function payment(Order $order): RedirectResponse|View
     {
         $this->authorize('view', $order);
 
+        // Xendit: redirect to payment URL
+        if ($order->payment_gateway === 'xendit' && $order->payment_url) {
+            return redirect()->away($order->payment_url);
+        }
+
+        // Midtrans: show Snap popup
         return view('checkout.payment', [
             'order' => $order,
             'snapToken' => $order->snap_token,
@@ -287,6 +313,7 @@ class CheckoutController extends Controller
         $transactionStatus = $status['transaction_status'] ?? null;
         $fraudStatus = $status['fraud_status'] ?? null;
 
+        // Handle settlement status (works for both Midtrans and Xendit normalized status)
         if (in_array($transactionStatus, ['capture', 'settlement'], true)) {
             if ($fraudStatus === 'challenge') {
                 $order->payment_status = 'unpaid';

@@ -28,4 +28,11 @@ interface PaymentGatewayInterface
      * @return array<string, mixed>
      */
     public function parseNotification(array $data): array;
+
+    /**
+     * Get transaction status from gateway.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getTransactionStatus(string $orderId): ?array;
 }
