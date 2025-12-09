@@ -142,40 +142,6 @@
 </section>
 
 
-{{-- 3. BLOG SECTION --}}
-@if(isset($editorialArticles) && $editorialArticles->count() > 0)
-<section id="blog" class="py-20 px-6 max-w-7xl mx-auto">
-    <div class="text-center mb-20">
-        <div class="inline-block mb-4 px-4 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-sm font-bold tracking-widest uppercase">HIGHLIGHT ARTICLES</div>
-        <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white mb-8">DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 pr-3">INSIGHTS</span></h2>
-        <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">Deep dive into <span class="text-white font-semibold">Intimate Care</span>, men's health, and modern lifestyle.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @foreach($editorialArticles->take(3) as $article)
-        <a href="{{ route('articles.show', $article->slug) }}" class="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 h-full flex flex-col">
-            <div class="aspect-[16/9] overflow-hidden">
-                @if($article->hasImage())
-                <img src="{{ $article->getImageUrl() }}" alt="{{ $article->title }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                @else
-                <div class="w-full h-full bg-gray-800"></div>
-                @endif
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <div class="flex items-center gap-4 mb-4 text-xs font-bold tracking-wider text-blue-400 uppercase">
-                    <span>{{ $article->categories->first()->name ?? 'Article' }}</span>
-                    <span class="w-1 h-1 rounded-full bg-gray-600"></span>
-                    <span class="text-gray-500">{{ $article->created_at->format('M d, Y') }}</span>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">{{ $article->title }}</h3>
-                <p class="text-gray-400 mb-6 line-clamp-2 flex-grow">{{ $article->excerpt ?: Str::limit(strip_tags($article->body), 100) }}</p>
-                <span class="inline-flex items-center gap-2 text-sm font-bold text-white hover:text-blue-400 transition-colors mt-auto">READ ARTICLE <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
-            </div>
-        </a>
-        @endforeach
-    </div>
-</section>
-@endif
-
 {{-- 4. PRODUCT SHOWCASE --}}
 <section id="products" class="py-24 bg-black/20 scroll-mt-24">
     <div class="max-w-7xl mx-auto px-6">
@@ -209,6 +175,39 @@
     </div>
 </section>
 
+{{-- 3. BLOG SECTION --}}
+@if(isset($editorialArticles) && $editorialArticles->count() > 0)
+<section id="blog" class="py-20 px-6 max-w-7xl mx-auto">
+    <div class="text-center mb-20">
+        <div class="inline-block mb-4 px-4 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-sm font-bold tracking-widest uppercase">HIGHLIGHT ARTICLES</div>
+        <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white mb-8">DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 pr-3">INSIGHTS</span></h2>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">Deep dive into <span class="text-white font-semibold">Intimate Care</span>, men's health, and modern lifestyle.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @foreach($editorialArticles->take(3) as $article)
+        <a href="{{ route('articles.show', $article->slug) }}" class="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 h-full flex flex-col">
+            <div class="aspect-[16/9] overflow-hidden">
+                @if($article->hasImage())
+                <img src="{{ $article->getImageUrl() }}" alt="{{ $article->title }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                @else
+                <div class="w-full h-full bg-gray-800"></div>
+                @endif
+            </div>
+            <div class="p-6 flex flex-col flex-grow">
+                <div class="flex items-center gap-4 mb-4 text-xs font-bold tracking-wider text-blue-400 uppercase">
+                    <span>{{ $article->categories->first()->name ?? 'Article' }}</span>
+                    <span class="w-1 h-1 rounded-full bg-gray-600"></span>
+                    <span class="text-gray-500">{{ $article->created_at->format('M d, Y') }}</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">{{ $article->title }}</h3>
+                <p class="text-gray-400 mb-6 line-clamp-2 flex-grow">{{ $article->excerpt ?: Str::limit(strip_tags($article->body), 100) }}</p>
+                <span class="inline-flex items-center gap-2 text-sm font-bold text-white hover:text-blue-400 transition-colors mt-auto">READ ARTICLE <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></span>
+            </div>
+        </a>
+        @endforeach
+    </div>
+</section>
+@endif
 
 {{-- 5. FEATURES SECTION --}}
 <section id="features" class="py-24 relative overflow-hidden scroll-mt-24">

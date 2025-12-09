@@ -42,8 +42,5 @@ class UserSeeder extends Seeder
             'role' => 'user',
             'email_verified_at' => now(),
         ]);
-
-        // Create additional customers
-        User::factory(5)->create(['role' => 'user']);
     }
 }
