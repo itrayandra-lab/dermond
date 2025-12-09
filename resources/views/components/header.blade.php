@@ -1,5 +1,9 @@
 {{-- Dermond Header with Alpine.js --}}
-@php $forceScrolled = $forceScrolled ?? false; @endphp
+@php
+    $forceScrolled = $forceScrolled ?? false;
+    $isLoggedIn = Auth::guard('web')->check() || Auth::guard('admin')->check();
+    $currentUser = Auth::guard('web')->user() ?? Auth::guard('admin')->user();
+@endphp
 <div
     x-data="{
         forceScrolled: {{ $forceScrolled ? 'true' : 'false' }},
@@ -45,30 +49,35 @@
                 <a href="{{ url('/') }}" class="hover:text-blue-500 transition-colors">HOME</a>
                 <a href="{{ route('articles.index') }}" class="hover:text-blue-500 transition-colors">BLOG</a>
                 <a href="{{ route('products.index') }}" class="hover:text-blue-500 transition-colors">PRODUCTS</a>
-                <a href="#features" class="hover:text-blue-500 transition-colors">WHY US</a>
                 <a href="{{ route('contact') }}" class="hover:text-blue-500 transition-colors">CONTACT</a>
             </div>
 
             {{-- Actions --}}
             <div class="flex items-center gap-6">
                 {{-- Auth Buttons --}}
-                @guest
+                @if(!$isLoggedIn)
                 <a href="{{ route('login') }}" class="hidden md:flex items-center gap-2 px-4 py-2 border border-blue-600/30 rounded text-blue-500 hover:bg-blue-600/10 transition-all text-sm uppercase tracking-widest font-bold">
                     Sign In
                 </a>
-                @endguest
-
-                @auth('web')
-                <a href="{{ route('customer.dashboard') }}" class="hidden md:flex items-center gap-2 px-4 py-2 border border-blue-600/30 rounded text-blue-500 hover:bg-blue-600/10 transition-all text-sm uppercase tracking-widest font-bold">
-                    Account
-                </a>
-                @endauth
-
-                @auth('admin')
-                <a href="{{ route('admin.dashboard') }}" class="hidden md:flex items-center gap-2 px-4 py-2 border border-blue-600/30 rounded text-blue-500 hover:bg-blue-600/10 transition-all text-sm uppercase tracking-widest font-bold">
-                    Admin
-                </a>
-                @endauth
+                @else
+                    @if($currentUser->role === 'user')
+                    <a href="{{ route('customer.dashboard') }}" class="hidden md:flex items-center gap-2 px-4 py-2 border border-blue-600/30 rounded text-blue-500 hover:bg-blue-600/10 transition-all text-sm uppercase tracking-widest font-bold">
+                        Account
+                    </a>
+                    @else
+                    <a href="{{ route('admin.dashboard') }}" class="hidden md:flex items-center gap-2 px-4 py-2 border border-blue-600/30 rounded text-blue-500 hover:bg-blue-600/10 transition-all text-sm uppercase tracking-widest font-bold">
+                        Admin
+                    </a>
+                    @endif
+                    <form action="{{ route('logout') }}" method="POST" class="hidden md:block">
+                        @csrf
+                        <button type="submit" class="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-red-400 transition-all text-sm uppercase tracking-widest font-bold">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                        </button>
+                    </form>
+                @endif
 
                 {{-- Cart Icon --}}
                 <a href="{{ route('cart.index') }}" class="text-white hover:text-blue-500 transition-colors relative">
@@ -112,20 +121,29 @@
             <a href="{{ url('/') }}" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">HOME</a>
             <a href="{{ route('articles.index') }}" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">BLOG</a>
             <a href="{{ route('products.index') }}" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">PRODUCTS</a>
-            <a href="#features" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">WHY US</a>
             <a href="{{ route('contact') }}" @click="isMobileMenuOpen = false" class="hover:text-blue-500 transition-colors w-full text-center py-4 border-b border-white/5">CONTACT</a>
 
-            @guest
+            @if(!$isLoggedIn)
             <a href="{{ route('login') }}" class="mt-4 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase tracking-widest hover:bg-blue-700 w-full text-center">
                 Sign In
             </a>
-            @endguest
-
-            @auth('web')
-            <a href="{{ route('customer.dashboard') }}" class="mt-4 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase tracking-widest hover:bg-blue-700 w-full text-center">
-                My Account
-            </a>
-            @endauth
+            @else
+                @if($currentUser->role === 'user')
+                <a href="{{ route('customer.dashboard') }}" class="mt-4 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase tracking-widest hover:bg-blue-700 w-full text-center">
+                    My Account
+                </a>
+                @else
+                <a href="{{ route('admin.dashboard') }}" class="mt-4 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase tracking-widest hover:bg-blue-700 w-full text-center">
+                    Admin Panel
+                </a>
+                @endif
+                <form action="{{ route('logout') }}" method="POST" class="w-full">
+                    @csrf
+                    <button type="submit" class="px-8 py-3 border border-red-500/30 text-red-400 rounded font-bold uppercase tracking-widest hover:bg-red-500/10 w-full text-center">
+                        Logout
+                    </button>
+                </form>
+            @endif
         </div>
     </div>
 </div>

@@ -1,33 +1,42 @@
 # Progress: Dermond
 
 ## Session Goal
-- Jadikan flow pembayaran Xendit-only dan singkirkan Midtrans.
+
+-   UI/UX fixes: Trix editor dark theme, header auth buttons, contact page English, homepage text fixes
+-   Authentication flow: guest middleware, logout for dual guards
 
 ## Current State
-- ✅ Binding gateway ke `XenditService` (factory default xendit); checkout pakai gateway `xendit` dan redirect `payment_url`.
-- ✅ Midtrans webhook route/handler dihapus; CSRF exemption hanya untuk Xendit; view order/pending/payment hanya render link Xendit dengan fallback jika `payment_url` kosong.
-- ✅ Config default `PAYMENT_GATEWAY=xendit` (`config/cart.php`, `.env.example`); OrderSeeder ikut default baru.
-- ⚠️ Midtrans package/config masih ada tapi tidak dipakai; belum ada test dijalankan setelah perubahan.
+
+### ✅ Done
+
+-   Trix editor dark theme: icons visible with CSS filter invert, text color fixed
+-   Contact page translated to full English
+-   Homepage "WHY CHOOSE US" section: removed redundant "WHY Dermond?" → "The Dermond Difference"
+-   Homepage "DERMOND INSIGHTS" section: translated description to English, fixed clipped "S" with `pr-1`
+-   Header auth buttons: check both `web` and `admin` guards using PHP variables
+-   Header logout button added for both desktop and mobile
+-   Login/Register forms redirect if already logged in (checks both guards)
+-   Logout route uses `auth:web,admin` middleware to allow both guards
+-   `redirectUsersTo('/dashboard')` in bootstrap/app.php for guest middleware
+
+### 🚧 WIP/Broken
+
+-   None identified
 
 ## Active Context (touched today)
-- app/Providers/AppServiceProvider.php
-- app/Services/Payment/PaymentGatewayFactory.php
-- app/Http/Controllers/CheckoutController.php
-- app/Http/Controllers/PaymentWebhookController.php
-- app/Http/Middleware/VerifyCsrfToken.php
-- config/cart.php
-- routes/web.php
-- resources/views/checkout/payment.blade.php
-- resources/views/checkout/pending.blade.php
-- resources/views/orders/show.blade.php
-- app/Contracts/PaymentGatewayInterface.php
-- app/Services/Payment/XenditService.php
-- database/seeders/OrderSeeder.php
-- .env.example
-- README.md
-- CHANGELOG.md
 
-## Next Steps
-1) Uji checkout sandbox Xendit end-to-end, pastikan redirect `payment_url` bekerja.
-2) Trigger webhook Xendit sandbox ke `/payment/xendit/notification` dan verifikasi status order ter-update.
-3) (Opsional) Bersihkan Midtrans: hapus `midtrans/midtrans-php`, `config/midtrans.php`, dan kode/panel terkait jika tidak diperlukan lagi.
+-   resources/views/components/trix-input.blade.php
+-   resources/views/components/header.blade.php
+-   resources/views/home/contact.blade.php
+-   resources/views/home/index.blade.php
+-   app/Http/Controllers/AuthController.php
+-   routes/web.php
+-   bootstrap/app.php
+-   docs/project_bible.md
+
+## NEXT STEPS
+
+1. Run `vendor/bin/pint --dirty` to fix code style
+2. Test full auth flow: login as user → logout → login as admin → logout
+3. Verify header shows correct buttons for each state (guest/user/admin)
+4. Continue Xendit payment testing if needed (from previous session)

@@ -14,8 +14,17 @@ class AuthController extends Controller
     /**
      * Show the unified login form.
      */
-    public function showLoginForm(): View
+    public function showLoginForm(): View|RedirectResponse
     {
+        // Redirect if already logged in via any guard
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('customer.dashboard');
+        }
+
         return view('auth.login');
     }
 
@@ -78,8 +87,17 @@ class AuthController extends Controller
     /**
      * Show the registration form.
      */
-    public function showRegisterForm(): View
+    public function showRegisterForm(): View|RedirectResponse
     {
+        // Redirect if already logged in via any guard
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('customer.dashboard');
+        }
+
         return view('auth.register');
     }
 
@@ -119,17 +137,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request): RedirectResponse
     {
-        // Detect which guard is currently authenticated
-        if (Auth::guard('admin')->check()) {
-            Auth::guard('admin')->logout();
-        } elseif (Auth::guard('web')->check()) {
-            Auth::guard('web')->logout();
-        }
+        // Logout from both guards to ensure complete logout
+        Auth::guard('admin')->logout();
+        Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')
+        return redirect('/')
             ->with('success', 'You have been logged out successfully.');
     }
 }

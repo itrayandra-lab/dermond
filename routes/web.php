@@ -92,8 +92,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:30,1')->name('register.post');
 });
 
-// Logout route (for both admin & customer)
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+// Logout route (for both admin & customer) - check both guards
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth:web,admin')
+    ->name('logout');
 
 // Customer routes
 Route::middleware(['auth', 'customer.auth'])->group(function () {

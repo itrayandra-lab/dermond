@@ -60,7 +60,7 @@
 
                             <div class="relative z-10">
                                 {{-- Abstract Circle behind product --}}
-                                <div class="absolute inset-0 bg-linear-to-tr from-blue-900/40 to-transparent rounded-full scale-90 blur-xl animate-pulse-slow"></div>
+                                <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/40 to-transparent rounded-full scale-90 blur-xl animate-pulse-slow"></div>
 
                                 {{-- Image with Float Animation --}}
                                 <div class="relative aspect-square w-full max-w-lg mx-auto flex items-center justify-center animate-float">
@@ -147,8 +147,8 @@
 <section id="blog" class="py-20 px-6 max-w-7xl mx-auto">
     <div class="text-center mb-20">
         <div class="inline-block mb-4 px-4 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-sm font-bold tracking-widest uppercase">HIGHLIGHT ARTICLES</div>
-        <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white mb-8">DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">INSIGHTS</span></h2>
-        <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">Eksplorasi mendalam tentang <span class="text-white font-semibold">Intimate Care</span>, kesehatan pria, dan gaya hidup modern.</p>
+        <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white mb-8">DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 pr-3">INSIGHTS</span></h2>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">Deep dive into <span class="text-white font-semibold">Intimate Care</span>, men's health, and modern lifestyle.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @foreach($editorialArticles->take(3) as $article)
@@ -215,11 +215,8 @@
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full bg-blue-900/5 blur-[100px] pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-6 relative z-10">
         <div class="text-center mb-16">
-            <h2 class="text-gray-500 font-bold tracking-[0.2em] text-lg uppercase mb-2">FEATURES</h2>
-            <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">Engineered for Performance</h3>
-            <a href="#" class="inline-flex items-center gap-2 text-blue-500 text-sm font-bold tracking-wider hover:text-blue-400 transition-colors group">
-                LEARN MORE <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </a>
+            <h2 class="text-gray-500 font-bold tracking-[0.2em] text-lg uppercase mb-2">WHY CHOOSE US</h2>
+            <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">The Dermond Difference</h3>
         </div>
         <div class="grid md:grid-cols-2 gap-6">
             {{-- Feature 1 --}}

@@ -30,7 +30,7 @@
                     <label for="code" class="block text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Kode Voucher <span class="text-blue-400">*</span></label>
                     <input type="text" name="code" id="code" value="{{ old('code', $voucher?->code) }}"
                         class="block w-full px-4 py-3 bg-dermond-dark border border-white/10 rounded-xl text-white placeholder-gray-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all uppercase font-mono tracking-wider @error('code') border-red-500/50 @enderror"
-                        placeholder="BEAUTY20" required>
+                        placeholder="DERMOND20" required>
                     @error('code')
                         <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
                     @enderror

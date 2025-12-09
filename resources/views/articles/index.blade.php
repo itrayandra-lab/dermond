@@ -10,11 +10,10 @@
                 HIGHLIGHT ARTICLES
             </div>
             <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white mb-8">
-                DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">INSIGHTS</span>
+                DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 pr-3">INSIGHTS</span>
             </h1>
             <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                Eksplorasi mendalam tentang <span class="text-white font-semibold">Intimate Care</span>, kesehatan pria, dan gaya hidup modern.
-                Didedikasikan untuk pria yang peduli pada detail.
+            Deep dive into <span class="text-white font-semibold">Intimate Care</span>, men's health, and modern lifestyle.
             </p>
         </div>
 

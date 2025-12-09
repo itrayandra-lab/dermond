@@ -45,9 +45,8 @@
             <div>
                 <h4 class="text-white font-bold mb-6 tracking-wide uppercase text-sm">Explore</h4>
                 <ul class="space-y-4 text-gray-500 text-sm font-medium">
+                    <li><a href="{{ route('articles.index') }}" class="hover:text-blue-500 transition-colors">Blog</a></li>
                     <li><a href="{{ route('products.index') }}" class="hover:text-blue-500 transition-colors">Products</a></li>
-                    <li><a href="#features" class="hover:text-blue-500 transition-colors">Science</a></li>
-                    <li><a href="{{ route('articles.index') }}" class="hover:text-blue-500 transition-colors">Journal</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-blue-500 transition-colors">Contact</a></li>
                 </ul>
             </div>

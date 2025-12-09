@@ -12,24 +12,24 @@
 
 @extends('layouts.app')
 
-@section('title', 'Kontak - ' . $siteName)
+@section('title', 'Contact - ' . $siteName)
 
 @section('content')
     <div class="pt-28 pb-20 bg-dermond-dark min-h-screen">
         <div class="container mx-auto px-6 md:px-8">
             {{-- Hero Section --}}
             <div class="text-center mb-12">
-                <p class="text-xs font-bold tracking-widest text-blue-400 uppercase mb-2">Hubungi Kami</p>
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Kontak</h1>
+                <p class="text-xs font-bold tracking-widest text-blue-400 uppercase mb-2">Get In Touch</p>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Contact</h1>
                 <p class="text-gray-400 max-w-2xl mx-auto">
-                    Ada pertanyaan atau butuh bantuan? Tim kami siap membantu Anda.
+                    Have questions or need assistance? Our team is here to help you.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
                 {{-- Contact Form --}}
                 <div class="bg-dermond-card border border-white/10 p-6 md:p-8 rounded-2xl">
-                    <h2 class="text-xl font-bold text-white mb-6">Kirim Pesan</h2>
+                    <h2 class="text-xl font-bold text-white mb-6">Send Message</h2>
 
                     @if(session('success'))
                         <div class="mb-6 p-4 bg-green-900/30 border border-green-500/30 rounded-xl text-green-400 text-sm">
@@ -49,7 +49,7 @@
                             {{-- Name --}}
                             <div>
                                 <label for="name" class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
-                                    Nama <span class="text-red-400">*</span>
+                                    Name <span class="text-red-400">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -57,7 +57,7 @@
                                     name="name"
                                     value="{{ old('name') }}"
                                     class="w-full px-4 py-3 bg-dermond-dark border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('name') border-red-500/50 @enderror"
-                                    placeholder="Nama lengkap Anda"
+                                    placeholder="Your full name"
                                     required
                                 >
                                 @error('name')
@@ -87,7 +87,7 @@
                             {{-- Subject --}}
                             <div>
                                 <label for="subject" class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
-                                    Subjek <span class="text-red-400">*</span>
+                                    Subject <span class="text-red-400">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -95,7 +95,7 @@
                                     name="subject"
                                     value="{{ old('subject') }}"
                                     class="w-full px-4 py-3 bg-dermond-dark border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors @error('subject') border-red-500/50 @enderror"
-                                    placeholder="Subjek pesan"
+                                    placeholder="Message subject"
                                     required
                                 >
                                 @error('subject')
@@ -106,14 +106,14 @@
                             {{-- Message --}}
                             <div>
                                 <label for="message" class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
-                                    Pesan <span class="text-red-400">*</span>
+                                    Message <span class="text-red-400">*</span>
                                 </label>
                                 <textarea
                                     id="message"
                                     name="message"
                                     rows="5"
                                     class="w-full px-4 py-3 bg-dermond-dark border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none @error('message') border-red-500/50 @enderror"
-                                    placeholder="Tulis pesan Anda di sini..."
+                                    placeholder="Write your message here..."
                                     required
                                 >{{ old('message') }}</textarea>
                                 @error('message')
@@ -133,7 +133,7 @@
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                 </template>
-                                <span x-text="loading ? 'Mengirim...' : 'Kirim Pesan'"></span>
+                                <span x-text="loading ? 'Sending...' : 'Send Message'"></span>
                             </button>
                         </div>
                     </form>
@@ -143,7 +143,7 @@
                 <div class="space-y-6">
                     {{-- Contact Details Card --}}
                     <div class="bg-dermond-card border border-white/10 p-6 md:p-8 rounded-2xl">
-                        <h2 class="text-xl font-bold text-white mb-6">Informasi Kontak</h2>
+                        <h2 class="text-xl font-bold text-white mb-6">Contact Information</h2>
 
                         <div class="space-y-5">
                             {{-- Email --}}
@@ -188,7 +188,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Alamat</p>
+                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Address</p>
                                     <p class="text-white">{{ $businessAddress }}</p>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Jam Operasional</p>
+                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Business Hours</p>
                                     <p class="text-white">{{ $businessHours }}</p>
                                 </div>
                             </div>
@@ -214,7 +214,7 @@
                     {{-- Social Links Card --}}
                     @if($instagramUrl || $facebookUrl || $youtubeUrl)
                     <div class="bg-dermond-card border border-white/10 p-6 md:p-8 rounded-2xl">
-                        <h2 class="text-xl font-bold text-white mb-6">Ikuti Kami</h2>
+                        <h2 class="text-xl font-bold text-white mb-6">Follow Us</h2>
                         <div class="flex gap-3">
                             @if($instagramUrl)
                             <a href="{{ $instagramUrl }}" target="_blank" rel="noopener noreferrer" class="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity">

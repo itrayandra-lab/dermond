@@ -115,6 +115,8 @@
 -   NO `tailwind.config.js` - use `@theme` in CSS
 -   NO deprecated utilities (`bg-opacity-*` → `bg-black/*`)
 -   Use `@import "tailwindcss"` not `@tailwind` directives
+-   Use `bg-linear-to-r` instead of `bg-gradient-to-r` (v4 syntax)
+-   `bg-clip-text` can clip italic text - add `pr-1` padding to prevent cutoff
 
 ### Frontend
 
@@ -137,6 +139,15 @@
 -   Email subjects use `[Dermond]` prefix
 -   Seeder emails use `@dermond.local` domain
 -   Social URLs: `instagram.com/dermond`, `facebook.com/dermond`, `youtube.com/@dermond`
+
+### Authentication (Dual Guard System)
+
+-   Two guards: `web` (customers) and `admin` (admin/content_manager)
+-   NEVER use `@guest`/`@auth` without checking both guards in header/shared views
+-   Use `$isLoggedIn = Auth::guard('web')->check() || Auth::guard('admin')->check()` in Blade
+-   Logout route MUST use `auth:web,admin` middleware to allow both guards
+-   Login/Register controllers must check both guards before showing form
+-   Header uses `$currentUser = Auth::guard('web')->user() ?? Auth::guard('admin')->user()`
 
 ## Key Files Reference
 
@@ -281,6 +292,14 @@ class="bg-yellow-900/30 text-yellow-400 border border-yellow-500/30"
 
 -   `admin/auth/login.blade.php` - Auth is unified at `/login` for all users
 -   `admin/expert-quotes/` - Entire feature removed (model, controller, views, migration, seeder)
+
+## Trix Editor (Dark Theme)
+
+-   Component: `resources/views/components/trix-input.blade.php`
+-   Icons use CSS `filter: invert(1)` to make them visible on dark background
+-   Toolbar background: `#0a1226` (dermond-nav)
+-   Editor text color: `#e2e8f0` (dermond-text)
+-   Active/hover state uses blue filter for icons
 
 ## Admin Panel Styling Patterns
 
