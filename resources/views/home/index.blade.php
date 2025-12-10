@@ -119,7 +119,7 @@
             @foreach($featuredProducts as $index => $product)
             <div @mouseenter="activeIndex = {{ $index }}" class="relative group overflow-hidden rounded-sm cursor-pointer transition-all duration-500 ease-out aspect-[4/5] md:aspect-auto md:min-h-0" :class="activeIndex === {{ $index }} ? 'md:flex-[2]' : 'md:flex-[1]'">
                 @if($product->hasImage())
-                <img src="{{ $product->getImageUrl() }}" alt="{{ $product->name }}" class="w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-105">
+                <img src="{{ $product->getImageUrl() }}" alt="{{ $product->name }}" class="w-full h-full object-contain transform transition-transform duration-700 ease-out group-hover:scale-105">
                 @else
                 <div class="w-full h-full bg-gray-800"></div>
                 @endif
