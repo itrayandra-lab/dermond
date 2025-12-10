@@ -10,7 +10,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\UserAddress;
-use App\Models\Voucher;
+use App\Services\RajaOngkirService;
 use App\Services\VoucherService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +27,7 @@ class CheckoutController extends Controller
     public function __construct(
         private PaymentGatewayInterface $gateway,
         private VoucherService $voucherService,
+        private RajaOngkirService $rajaOngkir,
     ) {}
 
     public function form(): RedirectResponse|View
@@ -41,8 +42,9 @@ class CheckoutController extends Controller
             ->orderBy('name')
             ->get(['code', 'name']);
 
+        /** @var \App\Models\User $user */
         $user = auth()->user();
-        $savedAddresses = $user->addresses()
+        $savedAddresses = $user?->addresses()
             ->orderByDesc('is_default')
             ->orderByDesc('created_at')
             ->get();
@@ -64,14 +66,32 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Keranjang kamu kosong.');
         }
 
+        /** @var \App\Models\User $user */
         $user = $request->user();
+
+        // Issue 3 Fix: Check for existing pending order to prevent double-submit (atomic check with lock)
+        $existingPaymentUrl = DB::transaction(function () use ($user): ?string {
+            $existingOrder = Order::where('user_id', $user->id)
+                ->where('payment_status', 'unpaid')
+                ->where('status', 'pending_payment')
+                ->where('payment_expired_at', '>', now())
+                ->whereNotNull('payment_url')
+                ->lockForUpdate()
+                ->first();
+
+            return $existingOrder?->payment_url;
+        });
+
+        if ($existingPaymentUrl) {
+            return redirect()->away($existingPaymentUrl);
+        }
 
         foreach ($cart->items as $item) {
             if (! $item->product || $item->product->status !== 'published') {
                 return redirect()->route('cart.index')->with('error', 'Ada produk yang tidak tersedia.');
             }
             if (! $item->product->isInStock($item->quantity)) {
-                return redirect()->route('cart.index')->with('error', 'Stok tidak mencukupi untuk '.$item->product->name);
+                return redirect()->route('cart.index')->with('error', 'Stok tidak mencukupi untuk ' . $item->product->name);
             }
         }
 
@@ -90,9 +110,25 @@ class CheckoutController extends Controller
 
         $this->ensureLocationHierarchy($province, $city, $district, $village);
 
-        $order = DB::transaction(function () use ($cart, $user, $request, $city, $province, $district, $village): Order {
+        // Issue 1 Fix: Calculate shipping cost server-side via RajaOngkir
+        $defaultWeight = config('rajaongkir.default_weight', 200);
+        $totalWeight = $cart->items->sum(fn($item) => ($item->product?->weight ?? $defaultWeight) * $item->quantity);
+
+        $shippingCost = $this->calculateServerSideShippingCost(
+            $request->integer('rajaongkir_destination_id'),
+            $totalWeight,
+            (string) $request->string('shipping_courier'),
+            (string) $request->string('shipping_service'),
+        );
+
+        if ($shippingCost === null) {
+            return redirect()->route('checkout.form')
+                ->withInput()
+                ->withErrors(['shipping_service' => 'Layanan pengiriman tidak valid. Silakan pilih ulang.']);
+        }
+
+        $order = DB::transaction(function () use ($cart, $user, $request, $city, $province, $district, $village, $shippingCost, $totalWeight): Order {
             $subtotal = $cart->getSubtotal();
-            $shippingCost = $request->integer('shipping_cost', 0);
 
             // Handle voucher
             $voucherCode = $request->string('voucher_code');
@@ -114,10 +150,6 @@ class CheckoutController extends Controller
             } else {
                 $total = max(0, $subtotal - $voucherDiscount) + $shippingCost;
             }
-
-            // Calculate total weight
-            $defaultWeight = config('rajaongkir.default_weight', 200);
-            $totalWeight = $cart->items->sum(fn ($item) => ($item->product?->weight ?? $defaultWeight) * $item->quantity);
 
             $order = Order::create([
                 'user_id' => $user->id,
@@ -315,5 +347,39 @@ class CheckoutController extends Controller
 
         $order->payment_type = $status['payment_type'] ?? $order->payment_type;
         $order->save();
+    }
+
+    /**
+     * Calculate shipping cost server-side via RajaOngkir API.
+     * Returns null if the selected courier/service is not found.
+     */
+    private function calculateServerSideShippingCost(int $destinationId, int $weight, string $courier, string $service): ?int
+    {
+        if ($destinationId <= 0 || $weight <= 0 || $courier === '' || $service === '') {
+            return null;
+        }
+
+        $originId = $this->rajaOngkir->getOriginId();
+        if (! $originId) {
+            return null;
+        }
+
+        $shippingOptions = $this->rajaOngkir->calculateCost($originId, $destinationId, $weight, [$courier]);
+
+        if ($shippingOptions->isEmpty()) {
+            return null;
+        }
+
+        // Find the exact service selected by user
+        $selectedOption = $shippingOptions->first(function ($option) use ($courier, $service) {
+            return strtolower($option['courier_code']) === strtolower($courier)
+                && strtolower($option['service']) === strtolower($service);
+        });
+
+        if (! $selectedOption) {
+            return null;
+        }
+
+        return (int) $selectedOption['cost'];
     }
 }

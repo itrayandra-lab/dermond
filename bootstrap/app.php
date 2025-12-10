@@ -17,6 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'chatbot.access' => \App\Http\Middleware\ChatbotAccessMiddleware::class,
         ]);
 
+        // Exclude payment webhook routes from CSRF verification
+        $middleware->validateCsrfTokens(except: [
+            'payment/*',
+        ]);
+
         $middleware->redirectGuestsTo('/login');
         $middleware->redirectUsersTo('/dashboard');
     })

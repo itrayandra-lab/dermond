@@ -53,6 +53,20 @@ class PaymentWebhookController extends Controller
 
         $xenditStatus = $data['xendit_status'] ?? null;
         $transactionStatus = $data['transaction_status'] ?? null;
+        $grossAmount = $data['gross_amount'] ?? null;
+
+        // Issue 2 Fix: Verify payment amount matches order total before marking as paid
+        if (($xenditStatus === 'PAID' || $xenditStatus === 'SETTLED') && $grossAmount !== null) {
+            if ((int) $grossAmount !== (int) $order->total) {
+                Log::warning('Xendit notification rejected: amount mismatch', [
+                    'order_id' => $order->order_number,
+                    'expected_amount' => $order->total,
+                    'received_amount' => $grossAmount,
+                ]);
+
+                return response()->json(['message' => 'Amount mismatch'], 400);
+            }
+        }
 
         if ($xenditStatus === 'PAID' || $xenditStatus === 'SETTLED') {
             $order->payment_status = 'paid';
