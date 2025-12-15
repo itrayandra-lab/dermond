@@ -51,7 +51,7 @@ return [
      *
      * You can use the following filetypes: ico, png, gif, jpeg, svg.
      */
-    'favicon' => '/images/asset-logo.png',
+    'favicon' => '/favicon.ico',
 
     'title' => [
         /**

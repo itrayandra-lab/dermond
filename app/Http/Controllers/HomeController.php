@@ -39,17 +39,17 @@ class HomeController extends Controller
         $editorialArticles = Article::published()
             ->with(['author', 'categories', 'media'])
             ->latest('published_at')
-            ->take(2)
-            ->get();
-
-        // Get 3 articles for Skin Talks section
-        $articles = Article::published()
-            ->with(['author', 'categories', 'tags', 'media'])
-            ->latest('published_at')
             ->take(3)
             ->get();
 
-        return view('home.index', compact('sliders', 'products', 'featuredProducts', 'editorialArticles', 'articles'));
+        // Get 3 articles for Skin Talks section
+        // $articles = Article::published()
+        //     ->with(['author', 'categories', 'tags', 'media'])
+        //     ->latest('published_at')
+        //     ->take(3)
+        //     ->get();
+
+        return view('home.index', compact('sliders', 'products', 'featuredProducts', 'editorialArticles'));
     }
 
     /**
