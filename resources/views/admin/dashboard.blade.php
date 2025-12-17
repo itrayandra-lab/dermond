@@ -12,7 +12,7 @@
         // Get recent products for admin
         $recentProducts = $isAdmin ? \App\Models\Product::latest()->take(3)->get() : collect();
         // Get recent articles for content manager
-        $recentArticles = $isContentManager ? \App\Models\Article::with('category')->latest()->take(3)->get() : collect();
+        $recentArticles = $isContentManager ? \App\Models\Article::with('categories')->latest()->take(3)->get() : collect();
         // Get orders and customers count for admin
         $orderCount = $isAdmin ? \App\Models\Order::count() : 0;
         $customerCount = $isAdmin ? \App\Models\User::where('role', 'user')->count() : 0;
@@ -264,7 +264,7 @@
                         <div class="flex-1 min-w-0">
                             <h3 class="text-sm font-bold text-white truncate group-hover:text-blue-400 transition-colors">{{ $article->title }}</h3>
                             <p class="text-[10px] text-gray-500 uppercase tracking-wider truncate">
-                                {{ $article->category->name ?? 'Uncategorized' }}
+                                {{ $article->categories->first()?->name ?? 'Uncategorized' }}
                             </p>
                         </div>
                         <div class="text-right">
