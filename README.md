@@ -103,6 +103,26 @@ database/
 └── factories/            # Test factories
 ```
 
+## Documentation
+
+Dokumentasi lengkap untuk developer yang akan maintain project ini:
+
+| Document | Deskripsi |
+| -------- | --------- |
+| [Getting Started](docs/getting-started.md) | Setup project dari nol, environment variables |
+| [Architecture](docs/architecture.md) | Project structure, design patterns, database design |
+| [Authentication](docs/authentication.md) | Dual guard system (customer & admin) |
+| [Products & Catalog](docs/products-catalog.md) | Product management, categories, media library |
+| [Cart & Checkout](docs/cart-checkout.md) | Shopping cart, checkout flow, shipping calculation |
+| [Orders](docs/orders.md) | Order lifecycle, statuses, stock management |
+| [Payment](docs/payment.md) | Xendit integration, webhooks, troubleshooting |
+| [Vouchers](docs/vouchers.md) | Voucher/discount system |
+| [Content Management](docs/content-management.md) | Articles, sliders, rich text |
+| [Integrations](docs/integrations.md) | RajaOngkir, chatbot configuration |
+| [Frontend](docs/frontend.md) | Tailwind v4, Alpine.js, Blade components |
+| [Testing](docs/testing.md) | Test suite, factories, coverage |
+| [Troubleshooting](docs/troubleshooting.md) | Common issues & solutions |
+
 ## License
 
 Proprietary - All rights reserved.

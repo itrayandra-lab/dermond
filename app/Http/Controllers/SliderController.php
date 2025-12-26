@@ -63,9 +63,7 @@ class SliderController extends Controller
      */
     public function create(): View
     {
-        $products = \App\Models\Product::published()->orderBy('name')->get();
-
-        return view('admin.slider.form', compact('products'));
+        return view('admin.slider.form');
     }
 
     /**
@@ -117,9 +115,8 @@ class SliderController extends Controller
     public function edit(int $id): View
     {
         $slider = Slider::findOrFail($id);
-        $products = \App\Models\Product::published()->orderBy('name')->get();
 
-        return view('admin.slider.form', compact('slider', 'products'));
+        return view('admin.slider.form', compact('slider'));
     }
 
     /**

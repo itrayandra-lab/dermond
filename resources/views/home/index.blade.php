@@ -5,95 +5,30 @@
 @section('content')
 
 {{-- 1. HERO SECTION --}}
-<section id="home" class="relative h-screen min-h-[800px] flex items-center overflow-hidden scroll-mt-24 bg-gray-900" x-data="{ loaded: false }" x-init="setTimeout(() => loaded = true, 100)">
-    {{-- Background Elements - Static across slides --}}
-    <div class="absolute top-1/4 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none transition-opacity duration-1000" :class="loaded ? 'opacity-100' : 'opacity-0'"></div>
-    <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none transition-opacity duration-1000 delay-300" :class="loaded ? 'opacity-100' : 'opacity-0'"></div>
-
+<section id="home" class="relative w-full h-screen overflow-hidden scroll-mt-24">
     <div id="hero-swiper" class="swiper w-full h-full">
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper w-full h-full">
             @forelse($sliders as $slider)
-            <div class="swiper-slide">
-                <div class="w-full h-full flex items-center">
-                    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full relative z-10">
-                        {{-- Left Content --}}
-                        <div class="space-y-8">
-                            <div class="reveal" :class="loaded ? 'active' : ''">
-                                <span class="font-bold italic tracking-[0.2em] text-sm uppercase mb-2 block animate-pulse-slow text-blue-500">
-                                    {{ $slider->getDisplaySubtitle() ?? 'Premium Men Care' }}
-                                </span>
-                                <h1 class="text-5xl md:text-7xl font-bold leading-tight text-white mb-4 tracking-tight">
-                                    {{ $slider->getDisplayTitle() }}
-                                </h1>
-                                @if($slider->description)
-                                <p class="text-lg text-gray-400 leading-relaxed">{{ $slider->description }}</p>
-                                @endif
-                            </div>
-                            @if($slider->getDisplayPrice())
-                            <div class="flex items-baseline gap-4 reveal reveal-delay-200" :class="loaded ? 'active' : ''">
-                                @if($slider->hasDiscount())
-                                    <span class="text-3xl font-bold text-blue-400">Rp {{ number_format($slider->getDisplayPrice(), 0, ',', '.') }}</span>
-                                    <span class="text-lg text-gray-500 line-through">Rp {{ number_format($slider->getOriginalPrice(), 0, ',', '.') }}</span>
-                                @else
-                                    <span class="text-3xl font-bold text-white">Rp {{ number_format($slider->getDisplayPrice(), 0, ',', '.') }}</span>
-                                @endif
-                            </div>
-                            @endif
-                            @if($slider->getCtaLink())
-                            <div class="flex flex-col sm:flex-row gap-4 reveal reveal-delay-300" :class="loaded ? 'active' : ''">
-                                <a href="{{ $slider->getCtaLink() }}" class="px-8 py-4 border border-gray-600 text-gray-300 hover:border-blue-500 hover:text-white font-bold rounded transition-all hover:-translate-y-1 flex items-center gap-2 group">
-                                    {{ $slider->getCtaText() }}
-                                    <svg class="w-[18px] h-[18px] transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            @endif
-                        </div>
+            <div class="swiper-slide w-full h-full relative">
+                {{-- Background Image --}}
+                @if($slider->hasDisplayImage())
+                <img src="{{ $slider->getDisplayImageUrl() }}"
+                     alt="{{ $slider->label ?? 'Hero Slide' }}"
+                     class="w-full h-full object-cover object-center"
+                     loading="{{ $loop->first ? 'eager' : 'lazy' }}">
+                @else
+                <div class="w-full h-full bg-gray-900"></div>
+                @endif
 
-                        {{-- Right Content - Slider/Product Image --}}
-                        <div class="relative group reveal reveal-delay-500" :class="loaded ? 'active' : ''">
-                            {{-- Vertical Text Decoration --}}
-                            <div class="absolute -right-2 top-0 h-full hidden xl:flex items-center justify-center pointer-events-none select-none">
-                                <span class="vertical-text text-8xl font-bold italic text-white/5 tracking-widest whitespace-nowrap">DERMOND</span>
-                            </div>
-
-                            <div class="relative z-10">
-                                {{-- Abstract Circle behind product --}}
-                                <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/40 to-transparent rounded-full scale-90 blur-xl animate-pulse-slow"></div>
-
-                                {{-- Image with Float Animation --}}
-                                <div class="relative aspect-square w-full max-w-lg mx-auto flex items-center justify-center animate-float">
-                                    @if($slider->hasDisplayImage())
-                                    <img src="{{ $slider->getDisplayImageUrl() }}" alt="{{ $slider->getDisplayTitle() }}" class="w-full h-full object-contain drop-shadow-2xl rounded-3xl opacity-90 transform transition-transform duration-700 hover:scale-110" style="mask-image: linear-gradient(to bottom, black 85%, transparent 100%)">
-                                    @else
-                                    <div class="w-full h-full bg-gray-800 rounded-3xl flex items-center justify-center"><span class="text-gray-500">No Image</span></div>
-                                    @endif
-
-                                    {{-- Floating Badge --}}
-                                    @if($slider->badge_title || $slider->badge_subtitle)
-                                    <div class="absolute -bottom-4 -left-4 bg-gray-900/90 backdrop-blur-md border border-blue-500/30 p-4 rounded-xl shadow-2xl transform transition-transform duration-300 hover:scale-105 hover:border-blue-500/60 cursor-default">
-                                        @if($slider->badge_title)
-                                        <p class="text-xs text-blue-400 uppercase tracking-wider font-bold mb-1">{{ $slider->badge_title }}</p>
-                                        @endif
-                                        @if($slider->badge_subtitle)
-                                        <p class="text-white font-bold text-lg">{{ $slider->badge_subtitle }}</p>
-                                        @endif
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{-- Gradient Overlay --}}
+                <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
             </div>
             @empty
-            <div class="swiper-slide">
-                <div class="w-full h-full flex items-center justify-center">
-                    <div class="text-center">
-                        <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">DERMOND</h1>
-                        <p class="text-gray-400 text-xl">Premium Men's Intimate Care</p>
-                    </div>
+            {{-- Fallback Slide --}}
+            <div class="swiper-slide w-full h-full relative bg-gray-900 flex items-center justify-center">
+                <div class="text-center">
+                    <h1 class="text-5xl md:text-7xl font-bold text-white mb-4">DERMOND</h1>
+                    <p class="text-gray-400 text-xl">Premium Men's Intimate Care</p>
                 </div>
             </div>
             @endforelse
