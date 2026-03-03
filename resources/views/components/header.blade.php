@@ -32,15 +32,9 @@
     <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0a1226]/80 border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             {{-- Logo --}}
-            <div class="flex items-center gap-3">
-                <a href="{{ url('/') }}" class="text-white w-10 h-10 hover:opacity-80 transition-opacity">
-                    <svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full">
-                        <path d="M20 15 H 55 A 35 35 0 0 1 55 85 H 20 V 15 Z M 45 40 A 10 10 0 0 0 45 60 H 55 A 10 10 0 0 0 55 40 H 45 Z" fill-rule="evenodd"/>
-                        <circle cx="45" cy="50" r="7"/>
-                    </svg>
-                </a>
-                <a href="{{ url('/') }}" class="text-3xl font-black italic tracking-[0.25em] text-white hover:text-gray-300 transition-colors">
-                    DERMOND
+            <div class="flex items-center">
+                <a href="{{ url('/') }}" class="hover:opacity-80 transition-opacity">
+                    <img src="{{ asset('images/DERMOND WHITE VERTICAL.png') }}" alt="Dermond" class="h-12 w-auto">
                 </a>
             </div>
 

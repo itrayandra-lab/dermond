@@ -6,7 +6,7 @@
     <div class="pt-32 pb-20 px-6 min-h-screen bg-dermond-dark">
         <div class="max-w-6xl mx-auto">
             <div class="mb-8">
-                <span class="text-blue-500 font-bold italic tracking-widest text-sm uppercase mb-2 block">Checkout</span>
+                <span class="text-blue-500 font-bold tracking-widest text-sm uppercase mb-2 block">Checkout</span>
                 <h1 class="text-4xl font-black text-white">Detail Pengiriman</h1>
             </div>
 

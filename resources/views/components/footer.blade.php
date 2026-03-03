@@ -27,14 +27,8 @@
         <div class="grid md:grid-cols-4 gap-12 mb-16">
             {{-- Brand --}}
             <div class="col-span-1 md:col-span-2">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="text-white w-10 h-10">
-                        <svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full">
-                            <path d="M20 15 H 55 A 35 35 0 0 1 55 85 H 20 V 15 Z M 45 40 A 10 10 0 0 0 45 60 H 55 A 10 10 0 0 0 55 40 H 45 Z" fill-rule="evenodd"/>
-                            <circle cx="45" cy="50" r="7"/>
-                        </svg>
-                    </div>
-                    <span class="text-2xl font-black tracking-[0.25em] text-white">DERMOND</span>
+                <div class="flex items-center mb-6">
+                    <img src="{{ asset('images/DERMOND WHITE VERTICAL.png') }}" alt="Dermond" class="h-12 w-auto">
                 </div>
                 <p class="text-gray-500 max-w-sm text-sm leading-relaxed">
                     Redefining men's intimate care with science-backed formulas and premium ingredients. Elevate your daily routine with confidence.

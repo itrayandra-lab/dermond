@@ -60,7 +60,7 @@
                 @endif
                 <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 z-10"></div>
                 <div class="absolute bottom-0 left-0 w-full p-8 z-20 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                    <h3 class="text-2xl md:text-3xl font-black text-white uppercase italic tracking-wider mb-2">{{ $product->name }}</h3>
+                    <h3 class="text-2xl md:text-3xl font-black text-white uppercase tracking-wider mb-2">{{ $product->name }}</h3>
                     <p class="text-blue-400 font-bold tracking-widest uppercase text-sm mb-4">{{ $product->category->name ?? 'Premium Care' }}</p>
                     <div class="h-0 opacity-0 overflow-hidden transition-all duration-500" :class="activeIndex === {{ $index }} ? 'group-hover:h-auto group-hover:opacity-100' : ''">
                         <p class="text-gray-300 text-sm mb-4 max-w-md">{{ Str::limit(strip_tags($product->description), 150) }}</p>
@@ -115,7 +115,7 @@
 <section id="blog" class="py-20 px-6 max-w-7xl mx-auto">
     <div class="text-center mb-20">
         <div class="inline-block mb-4 px-4 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-sm font-bold tracking-widest uppercase">HIGHLIGHT ARTICLES</div>
-        <h2 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white mb-8">DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 pr-3">INSIGHTS</span></h2>
+        <h2 class="text-5xl md:text-7xl font-black tracking-tighter text-white mb-8">DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 pr-3">INSIGHTS</span></h2>
         <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">Deep dive into <span class="text-white font-semibold">Intimate Care</span>, men's health, and modern lifestyle.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

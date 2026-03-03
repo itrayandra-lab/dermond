@@ -10,7 +10,7 @@
 <body class="h-full font-sans text-white antialiased bg-dermond-dark">
     <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md animate-fade-in-up">
-            <img class="mx-auto h-12 w-auto" src="{{ asset('images/asset-logo.png') }}" alt="Dermond">
+            <img class="mx-auto h-16 w-auto" src="{{ asset('images/DERMOND WHITE VERTICAL.png') }}" alt="Dermond">
             <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-white">Welcome Back</h2>
             <p class="mt-2 text-center text-sm text-gray-400">
                 Please sign in to continue

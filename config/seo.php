@@ -51,7 +51,7 @@ return [
      *
      * You can use the following filetypes: ico, png, gif, jpeg, svg.
      */
-    'favicon' => '/favicon.ico',
+    'favicon' => '/fav_dermond.ico',
 
     'title' => [
         /**
@@ -92,7 +92,7 @@ return [
          * don't have an image set via an associated ->seo model or via the ->getDynamicSEOData() method.
          * This should be a path to an image. The url to the path is generated using the `secure_url()` function (`secure_url($yourProvidedPath)`).
          */
-        'fallback' => '/images/asset-logo.png',
+        'fallback' => '/images/DERMOND WHITE VERTICAL.png',
     ],
 
     'author' => [

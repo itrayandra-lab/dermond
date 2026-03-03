@@ -107,7 +107,7 @@
         @if ($relatedArticles->isNotEmpty())
             <div class="max-w-7xl mx-auto mt-24">
                 <div class="text-center mb-12">
-                    <span class="text-blue-500 font-bold italic tracking-widest text-sm uppercase mb-2 block">Continue Reading</span>
+                    <span class="text-blue-500 font-bold tracking-widest text-sm uppercase mb-2 block">Continue Reading</span>
                     <h2 class="text-4xl md:text-5xl font-black text-white">RELATED ARTICLES</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

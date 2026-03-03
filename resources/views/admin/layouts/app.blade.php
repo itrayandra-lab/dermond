@@ -12,6 +12,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="icon" href="{{ asset('fav_dermond.ico') }}" type="image/x-icon">
 
     @stack('styles')
 </head>
@@ -29,8 +30,8 @@
         class="fixed inset-y-0 left-0 z-50 w-72 bg-dermond-nav text-white transition-transform duration-300 ease-in-out flex flex-col lg:translate-x-0 lg:fixed lg:inset-y-0 border-r border-white/5 shadow-2xl">
 
         <div class="flex h-24 shrink-0 items-center px-8 bg-dermond-nav/50">
-            <img src="{{ asset('images/asset-logo-white.png') }}" alt="Dermond"
-                class="h-8 w-auto opacity-90 hover:opacity-100 transition-opacity">
+            <img src="{{ asset('images/DERMOND WHITE VERTICAL.png') }}" alt="Dermond"
+                class="h-12 w-auto opacity-90 hover:opacity-100 transition-opacity">
         </div>
 
         <nav class="flex-1 overflow-y-auto px-4 py-6 space-y-1 custom-scrollbar">

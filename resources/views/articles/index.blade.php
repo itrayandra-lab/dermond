@@ -9,7 +9,7 @@
             <div class="inline-block mb-4 px-4 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-sm font-bold tracking-widest uppercase">
                 HIGHLIGHT ARTICLES
             </div>
-            <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white mb-8">
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-white mb-8">
                 DERMOND <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 pr-3">INSIGHTS</span>
             </h1>
             <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">

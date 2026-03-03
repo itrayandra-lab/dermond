@@ -60,7 +60,7 @@
                 {{-- Product Details --}}
                 <div class="space-y-8">
                     <div>
-                        <span class="font-bold italic tracking-widest text-sm uppercase mb-2 block text-blue-500">
+                        <span class="font-bold tracking-widest text-sm uppercase mb-2 block text-blue-500">
                             {{ $product->category->name ?? 'Premium Care' }}
                         </span>
                         <h1 class="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
@@ -187,7 +187,7 @@
     <section class="py-20 bg-dermond-nav">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-12">
-                <span class="text-blue-500 font-bold italic tracking-widest text-sm uppercase mb-2 block">You May Also Like</span>
+                <span class="text-blue-500 font-bold tracking-widest text-sm uppercase mb-2 block">You May Also Like</span>
                 <h2 class="text-4xl md:text-5xl font-black text-white">RELATED PRODUCTS</h2>
             </div>
 

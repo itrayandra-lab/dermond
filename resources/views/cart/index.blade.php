@@ -7,7 +7,7 @@
         <div class="max-w-6xl mx-auto">
             <div class="flex items-center justify-between mb-10">
                 <div>
-                    <span class="text-blue-500 font-bold italic tracking-widest text-sm uppercase mb-2 block">Shopping Bag</span>
+                    <span class="text-blue-500 font-bold tracking-widest text-sm uppercase mb-2 block">Shopping Bag</span>
                     <h1 class="text-4xl md:text-5xl font-black text-white">Keranjang Kamu</h1>
                 </div>
                 <a href="{{ route('products.index') }}" class="text-gray-400 hover:text-blue-400 transition-colors font-medium">
