@@ -14,7 +14,7 @@
             </h1>
             <div class="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
             <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mt-8">
-                Produk perawatan harian premium untuk pria modern. Diformulasikan khusus untuk kebutuhan <span class="text-white font-semibold">Daily Partner Pria</span>.
+                Produk perawatan harian premium untuk pria modern. Diformulasikan khusus untuk kebutuhan harian pria <span class="text-white font-semibold">(Men's Daily Partner)</span>.
             </p>
         </div>
 
