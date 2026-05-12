@@ -25,7 +25,7 @@ class HomeController extends Controller
             ->published()
             ->featured()
             ->orderBy('created_at', 'desc')
-            ->limit(3)
+            ->limit(5)
             ->get();
 
         // All published products for "PRODUCTS" section
