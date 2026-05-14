@@ -151,6 +151,22 @@
                         <p class="text-xs text-red-400 font-medium">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <div class="space-y-3">
+                    <label for="tiktok_url" class="block text-xs font-bold text-gray-500 uppercase tracking-widest">TikTok URL</label>
+                    <div class="relative group">
+                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-blue-400 transition-colors">
+                            <i class="fab fa-tiktok text-lg"></i>
+                        </span>
+                        <input type="url" id="tiktok_url" name="social_media[tiktok_url]"
+                               value="{{ old('social_media.tiktok_url', $social->firstWhere('key', 'social_media.tiktok_url')?->value) }}"
+                               placeholder="https://tiktok.com/@dermond"
+                               class="w-full pl-12 pr-4 py-3 rounded-xl bg-dermond-dark border border-white/10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm text-white placeholder-gray-600">
+                    </div>
+                    @error('social_media.tiktok_url')
+                        <p class="text-xs text-red-400 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
         </div>
 
