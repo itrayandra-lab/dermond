@@ -21,7 +21,7 @@
                 @endif
 
                 {{-- Gradient Overlay --}}
-                <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent"></div>
             </div>
             @empty
             {{-- Fallback Slide --}}
