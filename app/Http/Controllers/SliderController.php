@@ -112,6 +112,14 @@ class SliderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    public function show(int $id): RedirectResponse
+    {
+        return redirect()->route('admin.slider.edit', $id);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(int $id): View
     {
         $slider = Slider::findOrFail($id);
