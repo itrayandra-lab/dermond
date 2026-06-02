@@ -45,13 +45,16 @@ Route::post('/articles/load-more', [ArticleController::class, 'loadMore'])->name
 Route::get('/articles/category/{slug}', [ArticleController::class, 'showByCategory'])->name('articles.category');
 Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 
-// Cart routes (guest + authenticated)
+// Cart routes (guest can view, must login to add/modify)
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
-Route::post('/cart/add', [CartController::class, 'add'])->middleware('throttle:60,1')->name('cart.add');
-Route::patch('/cart/items/{item}', [CartController::class, 'update'])->name('cart.items.update');
-Route::delete('/cart/items/{item}', [CartController::class, 'remove'])->name('cart.items.remove');
-Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+
+Route::middleware(['auth', 'customer.auth'])->group(function () {
+    Route::post('/cart/add', [CartController::class, 'add'])->middleware('throttle:60,1')->name('cart.add');
+    Route::patch('/cart/items/{item}', [CartController::class, 'update'])->name('cart.items.update');
+    Route::delete('/cart/items/{item}', [CartController::class, 'remove'])->name('cart.items.remove');
+    Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+});
 
 // Checkout routes (auth only)
 Route::middleware(['auth', 'customer.auth'])->group(function () {

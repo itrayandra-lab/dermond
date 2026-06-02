@@ -75,7 +75,9 @@ class AuthController extends Controller
             Auth::guard('web')->login($user);
             $request->session()->regenerate();
 
-            return redirect()->intended(route('customer.dashboard'));
+            $redirectUrl = $request->query('redirect', route('customer.dashboard'));
+
+            return redirect()->intended($redirectUrl);
         }
 
         // Fallback for unknown roles

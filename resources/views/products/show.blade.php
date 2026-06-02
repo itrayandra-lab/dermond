@@ -22,6 +22,10 @@
                     window.dispatchEvent(new CustomEvent('cart-updated'));
                     window.showToast?.('Produk ditambahkan ke keranjang.');
                 } catch (error) {
+                    if (error?.response?.status === 401 || error?.response?.status === 403) {
+                        window.location.href = '{{ route('login') }}?redirect={{ urlencode(url()->current()) }}';
+                        return;
+                    }
                     window.showToast?.(error?.response?.data?.message ?? 'Gagal menambahkan ke keranjang.', 'error');
                 } finally {
                     this.addingToCart = false;
