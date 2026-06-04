@@ -31,6 +31,8 @@ class BundleFormRequest extends FormRequest
             'benefits.*.text' => ['required_with:benefits.*', 'string', 'max:255'],
             'included_products' => ['nullable', 'array'],
             'included_products.*' => ['string', 'max:255'],
+            'product_ids' => ['nullable', 'array'],
+            'product_ids.*' => ['integer', 'exists:products,id'],
         ];
     }
 

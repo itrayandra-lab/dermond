@@ -3,71 +3,155 @@
 @section('title', $bundle->name . ' - Dermond')
 
 @section('content')
-<div class="min-h-screen bg-dermond-dark pt-24 pb-20">
+<div class="min-h-screen bg-dermond-dark"
+     x-data="{
+        addingToCart: false,
+        added: false,
+        async addAllToCart() {
+            this.addingToCart = true;
+            try {
+                await axios.post('{{ route('cart.add-bundle', $bundle->slug) }}');
+                this.added = true;
+                window.dispatchEvent(new CustomEvent('cart-updated'));
+                window.showToast?.('Bundle ditambahkan ke keranjang!');
+            } catch (error) {
+                if (error?.response?.status === 401 || error?.response?.status === 403) {
+                    window.location.href = '{{ route('login') }}?redirect={{ urlencode(url()->current()) }}';
+                    return;
+                }
+                window.showToast?.(error?.response?.data?.message ?? 'Gagal menambahkan bundle.', 'error');
+            } finally {
+                this.addingToCart = false;
+            }
+        }
+     }">
 
-    {{-- Hero Section --}}
-    <div class="relative bg-[#050a14] border-b border-white/5 py-16 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-transparent pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
-            <p class="text-blue-400 text-xs font-bold tracking-[0.3em] uppercase mb-4">DERMOND ✦ BUNDLE EKSKLUSIF</p>
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight mb-4">
-                {{ $bundle->name }}
-            </h1>
-            @if($bundle->subtitle)
-                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">{{ $bundle->subtitle }}</p>
-            @endif
+    {{-- Hero --}}
+    <div class="relative bg-[#020811] overflow-hidden pt-24 pb-16">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/15 via-transparent to-transparent pointer-events-none"></div>
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-500/5 to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+
+                {{-- Left text --}}
+                <div class="flex-1 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-[0.2em] uppercase px-4 py-2 rounded-full mb-6">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Bundle Eksklusif
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-tight mb-4">
+                        {{ $bundle->name }}
+                    </h1>
+                    @if($bundle->subtitle)
+                    <p class="text-gray-400 text-lg max-w-xl mx-auto lg:mx-0 mb-8">{{ $bundle->subtitle }}</p>
+                    @endif
+
+                    {{-- Price --}}
+                    <div class="flex items-center gap-6 justify-center lg:justify-start mb-8">
+                        <div>
+                            <p class="text-4xl font-black text-white">Rp {{ number_format($bundle->price, 0, ',', '.') }}</p>
+                            @if($bundle->hasSavings())
+                            <div class="flex items-center gap-3 mt-1">
+                                <span class="text-gray-500 line-through text-base">Rp {{ number_format($bundle->original_price, 0, ',', '.') }}</span>
+                                <span class="bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold px-2.5 py-1 rounded-full">
+                                    Hemat Rp {{ number_format($bundle->getSavingsAmount(), 0, ',', '.') }}
+                                </span>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- CTA Buttons --}}
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                        @if($products->count() > 0)
+                        <button @click="addAllToCart()"
+                                :disabled="addingToCart"
+                                class="px-8 py-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white rounded-xl font-bold uppercase tracking-wider text-sm transition-all shadow-lg shadow-blue-900/30 flex items-center justify-center gap-3">
+                            <svg class="w-5 h-5" x-show="!addingToCart" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            <svg class="w-5 h-5 animate-spin" x-show="addingToCart" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                            <span x-text="addingToCart ? 'Menambahkan...' : (added ? 'Ditambahkan ✓' : 'Tambah Semua ke Keranjang')"></span>
+                        </button>
+                        @endif
+                        <a href="{{ route('products.index') }}"
+                           class="px-8 py-4 border border-white/10 hover:border-white/20 text-gray-400 hover:text-white rounded-xl font-bold uppercase tracking-wider text-sm transition-all text-center">
+                            Lihat Produk Lain
+                        </a>
+                    </div>
+                </div>
+
+                {{-- Right image --}}
+                @if($bundle->hasImages())
+                <div class="flex-1 w-full max-w-lg" x-data="{ activeImage: 0 }">
+                    @php $images = $bundle->getMedia('bundle_images'); @endphp
+                    <div class="rounded-2xl overflow-hidden bg-[#0a1628] border border-white/5 aspect-square flex items-center justify-center">
+                        @foreach($images as $i => $media)
+                        <img src="{{ $media->getUrl() }}"
+                             alt="{{ $bundle->name }}"
+                             class="w-full h-full object-cover transition-all duration-500"
+                             :class="activeImage === {{ $i }} ? 'block' : 'hidden'">
+                        @endforeach
+                    </div>
+                    @if($images->count() > 1)
+                    <div class="flex gap-2 mt-3 justify-center">
+                        @foreach($images as $i => $media)
+                        <button @click="activeImage = {{ $i }}"
+                                class="w-12 h-12 rounded-lg overflow-hidden border-2 transition-all"
+                                :class="activeImage === {{ $i }} ? 'border-blue-500' : 'border-white/10 opacity-40 hover:opacity-80'">
+                            <img src="{{ $media->getUrl() }}" alt="" class="w-full h-full object-cover">
+                        </button>
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+                @endif
+
+            </div>
         </div>
     </div>
 
+    {{-- Content --}}
     <div class="max-w-7xl mx-auto px-6 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
-        {{-- Image Gallery --}}
-        @if($bundle->hasImages())
-        <div class="mb-16" x-data="{ activeImage: 0 }">
-            @php $images = $bundle->getMedia('bundle_images'); @endphp
+            {{-- Left: Details --}}
+            <div class="lg:col-span-2 space-y-12">
 
-            {{-- Main Image --}}
-            <div class="relative rounded-2xl overflow-hidden bg-[#050a14] border border-white/5 mb-4" style="max-height: 600px;">
-                @foreach($images as $i => $media)
-                <img src="{{ $media->getUrl() }}"
-                     alt="{{ $bundle->name }}"
-                     class="w-full object-contain transition-opacity duration-500"
-                     :class="activeImage === {{ $i }} ? 'block' : 'hidden'"
-                     style="max-height: 600px; margin: auto;">
-                @endforeach
-            </div>
-
-            {{-- Thumbnails --}}
-            @if($images->count() > 1)
-            <div class="flex gap-3 justify-center flex-wrap">
-                @foreach($images as $i => $media)
-                <button @click="activeImage = {{ $i }}"
-                        class="w-16 h-16 rounded-xl overflow-hidden border-2 transition-all"
-                        :class="activeImage === {{ $i }} ? 'border-blue-500' : 'border-white/10 opacity-50 hover:opacity-100'">
-                    <img src="{{ $media->getUrl() }}" alt="" class="w-full h-full object-cover">
-                </button>
-                @endforeach
-            </div>
-            @endif
-        </div>
-        @endif
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-            {{-- Left: Products & Benefits --}}
-            <div class="space-y-10">
-
-                {{-- Included Products --}}
-                @if(!empty($bundle->included_products))
+                {{-- Products in bundle --}}
+                @if($products->count() > 0)
                 <div>
-                    <h2 class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-6">ISI BUNDLE</h2>
-                    <div class="space-y-3">
-                        @foreach($bundle->included_products as $product)
-                        <div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
-                            <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0 font-bold text-sm">
-                                {{ $loop->iteration }}
+                    <p class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-2">ISI BUNDLE</p>
+                    <h2 class="text-2xl font-black text-white uppercase mb-8">{{ $products->count() }} Produk Pilihan</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        @foreach($products as $product)
+                        <a href="{{ route('products.show', $product->slug) }}"
+                           class="group flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500/30 hover:bg-white/8 transition-all">
+                            <div class="w-16 h-16 rounded-xl bg-black/40 overflow-hidden shrink-0 flex items-center justify-center">
+                                @if($product->hasImage())
+                                    <img src="{{ $product->getImageUrl() }}" alt="{{ $product->name }}" class="w-full h-full object-contain group-hover:scale-105 transition-transform">
+                                @else
+                                    <svg class="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                                @endif
                             </div>
-                            <span class="text-white font-semibold">{{ $product }}</span>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-white font-bold text-sm group-hover:text-blue-400 transition-colors truncate">{{ $product->name }}</p>
+                                <p class="text-xs text-blue-400 uppercase tracking-wider mt-0.5">{{ $product->category->name ?? '' }}</p>
+                                <p class="text-xs text-gray-500 mt-1">Rp {{ number_format($product->getCurrentPrice(), 0, ',', '.') }}</p>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-600 group-hover:text-blue-400 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+                @elseif(!empty($bundle->included_products))
+                <div>
+                    <p class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-2">ISI BUNDLE</p>
+                    <h2 class="text-2xl font-black text-white uppercase mb-8">{{ count($bundle->included_products) }} Produk Pilihan</h2>
+                    <div class="space-y-3">
+                        @foreach($bundle->included_products as $name)
+                        <div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                            <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0 font-bold text-sm">{{ $loop->iteration }}</div>
+                            <span class="text-white font-semibold">{{ $name }}</span>
                         </div>
                         @endforeach
                     </div>
@@ -77,15 +161,16 @@
                 {{-- Benefits --}}
                 @if(!empty($bundle->benefits))
                 <div>
-                    <h2 class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-6">KEUNGGULAN</h2>
-                    <div class="space-y-4">
+                    <p class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-2">KEUNGGULAN</p>
+                    <h2 class="text-2xl font-black text-white uppercase mb-8">Kenapa Bundle Ini?</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @foreach($bundle->benefits as $benefit)
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                        <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0 mt-0.5">
                                 @if(($benefit['icon'] ?? '') === 'shield')
                                     <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 @elseif(($benefit['icon'] ?? '') === 'droplet')
-                                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2.25c-5.385 0-9 3.888-9 8.25 0 4.455 3.75 8.25 9 8.25s9-3.795 9-8.25c0-4.362-3.615-8.25-9-8.25z"/></svg>
+                                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3C12 3 6 9 6 14a6 6 0 0012 0c0-5-6-11-6-11z"/></svg>
                                 @elseif(($benefit['icon'] ?? '') === 'sparkles')
                                     <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                                 @elseif(($benefit['icon'] ?? '') === 'star')
@@ -94,7 +179,7 @@
                                     <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 @endif
                             </div>
-                            <p class="text-gray-300 text-sm leading-relaxed pt-2">{{ $benefit['text'] }}</p>
+                            <p class="text-gray-300 text-sm leading-relaxed">{{ $benefit['text'] }}</p>
                         </div>
                         @endforeach
                     </div>
@@ -104,67 +189,62 @@
                 {{-- Description --}}
                 @if($bundle->description)
                 <div>
-                    <h2 class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-4">TENTANG BUNDLE</h2>
+                    <p class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-4">TENTANG BUNDLE</p>
                     <p class="text-gray-400 leading-relaxed">{{ $bundle->description }}</p>
                 </div>
                 @endif
 
             </div>
 
-            {{-- Right: Price & CTA --}}
-            <div class="lg:sticky lg:top-28">
-                <div class="bg-[#0f172a] border border-white/10 rounded-2xl p-8 hover:border-blue-500/30 transition-colors">
+            {{-- Right sidebar: sticky order card --}}
+            <div>
+                <div class="lg:sticky lg:top-24 space-y-4">
+                    <div class="bg-[#0f172a] border border-white/10 rounded-2xl p-6">
+                        <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Ringkasan Bundle</p>
 
-                    <div class="mb-8">
-                        <p class="text-gray-500 text-sm uppercase tracking-widest font-bold mb-2">Harga Bundle</p>
-                        <div class="flex items-end gap-4">
-                            <span class="text-4xl md:text-5xl font-black text-white">
-                                Rp {{ number_format($bundle->price, 0, ',', '.') }}
-                            </span>
+                        @if(!empty($bundle->included_products))
+                        <div class="space-y-2 mb-6">
+                            @foreach($bundle->included_products as $name)
+                            <div class="flex items-center gap-2 text-sm text-gray-400">
+                                <svg class="w-3.5 h-3.5 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                {{ $name }}
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
+
+                        <div class="border-t border-white/5 pt-4 mb-6">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-500 text-sm">Total</span>
+                                <span class="text-xl font-black text-white">Rp {{ number_format($bundle->price, 0, ',', '.') }}</span>
+                            </div>
                             @if($bundle->hasSavings())
-                                <span class="text-gray-500 line-through text-lg mb-1">
-                                    Rp {{ number_format($bundle->original_price, 0, ',', '.') }}
-                                </span>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="text-gray-600 text-xs">Harga normal</span>
+                                <span class="text-gray-500 line-through text-xs">Rp {{ number_format($bundle->original_price, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="mt-2 text-center bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold px-3 py-1.5 rounded-lg">
+                                Hemat Rp {{ number_format($bundle->getSavingsAmount(), 0, ',', '.') }}
+                            </div>
                             @endif
                         </div>
-                        @if($bundle->hasSavings())
-                        <div class="mt-3 inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-bold">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                            Hemat Rp {{ number_format($bundle->getSavingsAmount(), 0, ',', '.') }}
-                        </div>
+
+                        @if($products->count() > 0)
+                        <button @click="addAllToCart()"
+                                :disabled="addingToCart"
+                                class="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-all flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" x-show="!addingToCart" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            <span x-text="addingToCart ? 'Menambahkan...' : (added ? 'Ditambahkan ✓' : 'Tambah ke Keranjang')"></span>
+                        </button>
                         @endif
                     </div>
 
-                    @if(!empty($bundle->included_products))
-                    <div class="mb-8 p-4 rounded-xl bg-white/5 border border-white/5">
-                        <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Termasuk</p>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach($bundle->included_products as $product)
-                            <span class="text-xs text-gray-300 bg-white/5 px-3 py-1 rounded-full border border-white/10">{{ $product }}</span>
-                            @endforeach
-                        </div>
+                    <div class="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/5">
+                        <svg class="w-4 h-4 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <p class="text-xs text-gray-400">Satu set praktis untuk rutin harian pria aktif.</p>
                     </div>
-                    @endif
-
-                    <div class="text-center py-4 border-t border-white/5">
-                        <p class="text-xs text-gray-500">Hubungi kami untuk info pembelian bundle</p>
-                    </div>
-
-                    <div class="pt-2">
-                        <a href="{{ route('products.index') }}"
-                           class="block w-full text-center py-3 px-6 rounded-xl border border-white/10 text-gray-400 hover:text-white hover:border-white/20 transition-all text-sm font-bold uppercase tracking-widest">
-                            ← Lihat Semua Produk
-                        </a>
-                    </div>
-                </div>
-
-                {{-- Tagline --}}
-                <div class="mt-4 flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/5">
-                    <svg class="w-5 h-5 text-blue-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    <p class="text-xs text-gray-400">Satu set praktis untuk rutin harian pria.</p>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

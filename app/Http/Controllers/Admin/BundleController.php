@@ -28,7 +28,9 @@ class BundleController extends Controller
 
     public function create(): View
     {
-        return view('admin.bundles.form');
+        $products = \App\Models\Product::published()->orderBy('name')->get(['id', 'name']);
+
+        return view('admin.bundles.form', compact('products'));
     }
 
     public function store(BundleFormRequest $request): RedirectResponse
@@ -50,8 +52,9 @@ class BundleController extends Controller
     public function edit(Bundle $bundle): View
     {
         $bundle->load('media');
+        $products = \App\Models\Product::published()->orderBy('name')->get(['id', 'name']);
 
-        return view('admin.bundles.form', compact('bundle'));
+        return view('admin.bundles.form', compact('bundle', 'products'));
     }
 
     public function update(BundleFormRequest $request, Bundle $bundle): RedirectResponse

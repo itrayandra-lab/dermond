@@ -24,6 +24,7 @@ class Bundle extends Model implements HasMedia
         'original_price',
         'benefits',
         'included_products',
+        'product_ids',
         'status',
     ];
 
@@ -32,6 +33,7 @@ class Bundle extends Model implements HasMedia
         return [
             'benefits' => 'array',
             'included_products' => 'array',
+            'product_ids' => 'array',
         ];
     }
 

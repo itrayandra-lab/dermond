@@ -13,6 +13,16 @@ class BundleController extends Controller
 
         $bundle->load('media');
 
-        return view('bundles.show', compact('bundle'));
+        // Load actual products from DB if product_ids stored
+        $productIds = $bundle->product_ids ?? [];
+        $products = collect();
+        if (! empty($productIds)) {
+            $products = \App\Models\Product::with(['category', 'media'])
+                ->published()
+                ->whereIn('id', $productIds)
+                ->get();
+        }
+
+        return view('bundles.show', compact('bundle', 'products'));
     }
 }

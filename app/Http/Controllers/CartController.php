@@ -39,6 +39,48 @@ class CartController extends Controller
     }
 
     /**
+     * Add all products from a bundle to cart in one request.
+     */
+    public function addBundle(\App\Models\Bundle $bundle): JsonResponse
+    {
+        abort_if($bundle->status !== 'published', 404);
+
+        $productIds = $bundle->product_ids ?? [];
+
+        if (empty($productIds)) {
+            return response()->json(['message' => 'Bundle tidak memiliki produk.'], 422);
+        }
+
+        $cart = $this->getCart();
+        $products = Product::with('media')->published()->whereIn('id', $productIds)->get();
+        $added = 0;
+
+        foreach ($products as $product) {
+            if (! $product->isInStock(1)) {
+                continue;
+            }
+
+            $cartItem = $cart->items()->where('product_id', $product->id)->first();
+            $newQuantity = $cartItem ? $cartItem->quantity + 1 : 1;
+
+            if ($product->isInStock($newQuantity)) {
+                $cart->addProduct($product, 1);
+                $added++;
+            }
+        }
+
+        if ($added === 0) {
+            return response()->json(['message' => 'Semua produk dalam bundle habis stok.'], 422);
+        }
+
+        return response()->json([
+            'message' => $added.' produk bundle ditambahkan ke keranjang.',
+            'count' => $cart->getItemsCount(),
+            'totals' => $this->cartTotals($cart),
+        ]);
+    }
+
+    /**
      * Add a product to cart.
      */
     public function add(AddToCartRequest $request): JsonResponse

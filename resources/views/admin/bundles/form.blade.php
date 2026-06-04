@@ -148,6 +148,26 @@
                 </div>
             </div>
 
+            {{-- Link to actual products --}}
+            <div class="bg-dermond-card border border-white/10 rounded-2xl p-6 md:p-8">
+                <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                    Link ke Produk (untuk Add to Cart)
+                </h3>
+                <p class="text-xs text-gray-500 mb-4">Pilih produk yang akan ditambahkan ke keranjang saat customer klik "Add to Cart" di halaman bundle.</p>
+                <div class="space-y-2 max-h-64 overflow-y-auto pr-1">
+                    @foreach($products as $product)
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-white/10 cursor-pointer hover:bg-white/5 transition-colors
+                        {{ in_array($product->id, old('product_ids', $bundle->product_ids ?? [])) ? 'bg-blue-500/10 border-blue-500/30' : '' }}">
+                        <input type="checkbox" name="product_ids[]" value="{{ $product->id }}"
+                               {{ in_array($product->id, old('product_ids', $bundle->product_ids ?? [])) ? 'checked' : '' }}
+                               class="text-blue-500 focus:ring-blue-500 border-white/20 bg-dermond-dark rounded">
+                        <span class="text-sm text-gray-300">{{ $product->name }}</span>
+                    </label>
+                    @endforeach
+                </div>
+            </div>
+
             {{-- Benefits --}}
             <div class="bg-dermond-card border border-white/10 rounded-2xl p-6 md:p-8"
                  x-data="{

@@ -56,6 +56,7 @@ Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 
 Route::middleware(['auth', 'customer.auth'])->group(function () {
     Route::post('/cart/add', [CartController::class, 'add'])->middleware('throttle:60,1')->name('cart.add');
+    Route::post('/cart/bundle/{bundle:slug}', [CartController::class, 'addBundle'])->middleware('throttle:10,1')->name('cart.add-bundle');
     Route::patch('/cart/items/{item}', [CartController::class, 'update'])->name('cart.items.update');
     Route::delete('/cart/items/{item}', [CartController::class, 'remove'])->name('cart.items.remove');
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
