@@ -18,12 +18,20 @@ class CustomerAuth
         Auth::shouldUse('web');
 
         if (! Auth::guard('web')->check()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Unauthenticated.'], 401);
+            }
+
             return redirect()->route('login');
         }
 
         // Validate customer role
         if (Auth::guard('web')->user()->role !== 'user') {
             Auth::guard('web')->logout();
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Unauthorized.'], 403);
+            }
 
             return redirect()->route('login')->with('error', 'Unauthorized access.');
         }
