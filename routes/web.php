@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ArticleCategoryController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\BundleController as AdminBundleController;
 use App\Http\Controllers\Admin\ChatbotSettingsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\SiteSettingController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BundleController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatbotController;
@@ -33,6 +35,9 @@ Route::get('/kontak', [HomeController::class, 'contact'])->name('contact');
 Route::post('/kontak', [App\Http\Controllers\ContactController::class, 'store'])
     ->middleware('throttle:5,1')
     ->name('contact.store');
+
+// Bundle routes (public)
+Route::get('/bundle/{bundle:slug}', [BundleController::class, 'show'])->name('bundles.show');
 
 // Product routes
 Route::get('/products', [ProductController::class, 'guestIndex'])->name('products.index');
@@ -158,6 +163,7 @@ Route::prefix('admin')->name('admin.')->middleware(['admin.auth'])->group(functi
 
         Route::resource('users', AdminUserController::class)->except(['show']);
         Route::resource('vouchers', AdminVoucherController::class)->except(['show']);
+        Route::resource('bundles', AdminBundleController::class)->except(['show']);
 
         Route::get('contact-messages', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact-messages.index');
         Route::get('contact-messages/{contactMessage}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact-messages.show');

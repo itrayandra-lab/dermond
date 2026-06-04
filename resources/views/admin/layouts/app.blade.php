@@ -65,6 +65,16 @@
                     Sliders
                 </a>
 
+                <a href="{{ route('admin.bundles.index') }}"
+                    class="group flex items-center px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 {{ request()->routeIs('admin.bundles.*') ? 'bg-gradient-to-r from-blue-500/10 to-transparent text-blue-400 border-l-2 border-blue-500' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent' }}">
+                    <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.bundles.*') ? 'text-blue-400' : 'text-gray-500 group-hover:text-white' }} transition-colors"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    Bundles
+                </a>
+
                 <a href="{{ route('admin.orders.index') }}"
                     class="group flex items-center px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-300 {{ request()->routeIs('admin.orders.*') ? 'bg-gradient-to-r from-blue-500/10 to-transparent text-blue-400 border-l-2 border-blue-500' : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent' }}">
                     <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.orders.*') ? 'text-blue-400' : 'text-gray-500 group-hover:text-white' }} transition-colors"

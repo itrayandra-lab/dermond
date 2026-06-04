@@ -77,6 +77,64 @@
 </section>
 
 
+{{-- 3. BUNDLE EKSKLUSIF --}}
+@if(isset($bundle) && $bundle)
+<section class="py-20 bg-[#030811]">
+    <div class="max-w-7xl mx-auto px-6">
+        <a href="{{ route('bundles.show', $bundle->slug) }}"
+           class="group relative block rounded-2xl overflow-hidden border border-white/10 hover:border-blue-500/40 transition-all duration-500 bg-[#0a1628]">
+
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+            <div class="flex flex-col md:flex-row items-center gap-8 p-8 md:p-12 relative z-10">
+
+                {{-- Image --}}
+                @if($bundle->hasImages())
+                <div class="w-full md:w-1/2 rounded-xl overflow-hidden">
+                    <img src="{{ $bundle->getFirstImageUrl() }}" alt="{{ $bundle->name }}"
+                         class="w-full object-cover group-hover:scale-105 transition-transform duration-700 max-h-80 object-center">
+                </div>
+                @endif
+
+                {{-- Info --}}
+                <div class="w-full md:w-1/2 space-y-6">
+                    <div>
+                        <p class="text-blue-400 text-xs font-bold tracking-[0.3em] uppercase mb-3">DERMOND ✦ BUNDLE EKSKLUSIF</p>
+                        <h2 class="text-3xl md:text-4xl font-black text-white uppercase tracking-tight mb-3">
+                            {{ $bundle->name }}
+                        </h2>
+                        @if($bundle->subtitle)
+                        <p class="text-gray-400">{{ $bundle->subtitle }}</p>
+                        @endif
+                    </div>
+
+                    @if(!empty($bundle->included_products))
+                    <div class="flex flex-wrap gap-2">
+                        @foreach(array_slice($bundle->included_products, 0, 5) as $product)
+                        <span class="text-xs text-gray-300 bg-white/5 px-3 py-1 rounded-full border border-white/10">{{ $product }}</span>
+                        @endforeach
+                    </div>
+                    @endif
+
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <div>
+                            <p class="text-2xl font-black text-white">Rp {{ number_format($bundle->price, 0, ',', '.') }}</p>
+                            @if($bundle->hasSavings())
+                            <p class="text-sm text-green-400 font-bold mt-1">Hemat Rp {{ number_format($bundle->getSavingsAmount(), 0, ',', '.') }}</p>
+                            @endif
+                        </div>
+                        <div class="flex items-center gap-2 text-blue-400 font-bold text-sm group-hover:gap-3 transition-all">
+                            <span class="uppercase tracking-widest text-xs">Lihat Bundle</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+@endif
+
 {{-- 4. PRODUCT SHOWCASE --}}
 <section id="products" class="py-24 bg-black/20 scroll-mt-24">
     <div class="max-w-7xl mx-auto px-6">

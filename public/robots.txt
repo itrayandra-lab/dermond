@@ -1,2 +1,25 @@
 User-agent: *
-Disallow:
+Allow: /
+Sitemap:https://dermond.id/sitemap.xml
+Sitemap:https://dermond.id/sitemap-1.xml
+Sitemap:https://dermond.id/sitemap-2.xml
+Sitemap:https://dermond.id/sitemap-3.xml
+Sitemap:https://dermond.id/sitemap-4.xml
+Sitemap:https://dermond.id/sitemap-5.xml
+Sitemap:https://dermond.id/sitemap-6.xml
+Sitemap:https://dermond.id/sitemap-7.xml
+Sitemap:https://dermond.id/sitemap-8.xml
+Sitemap:https://dermond.id/sitemap-9.xml
+Sitemap:https://dermond.id/sitemap-10.xml
+Sitemap:https://dermond.id/sitemap-11.xml
+Sitemap:https://dermond.id/sitemap-12.xml
+Sitemap:https://dermond.id/sitemap-13.xml
+Sitemap:https://dermond.id/sitemap-14.xml
+Sitemap:https://dermond.id/sitemap-15.xml
+Sitemap:https://dermond.id/sitemap-16.xml
+Sitemap:https://dermond.id/sitemap-17.xml
+Sitemap:https://dermond.id/sitemap-18.xml
+Sitemap:https://dermond.id/sitemap-19.xml
+Sitemap:https://dermond.id/sitemap-20.xml
+Sitemap:https://dermond.id/sitemap-21.xml
+Sitemap:https://dermond.id/sitemap-22.xml

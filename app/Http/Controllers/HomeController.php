@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Bundle;
 use App\Models\Product;
 use App\Models\Slider;
 use Illuminate\View\View;
@@ -19,7 +20,7 @@ class HomeController extends Controller
             ->orderBy('position', 'asc')
             ->orderBy('created_at', 'asc')
             ->get();
-            
+
         // Featured products for "THE ULTIMATE COLLECTION" section
         $featuredProducts = Product::with(['category', 'media'])
             ->published()
@@ -49,7 +50,10 @@ class HomeController extends Controller
         //     ->take(3)
         //     ->get();
 
-        return view('home.index', compact('sliders', 'products', 'featuredProducts', 'editorialArticles'));
+        // Get published bundle for homepage section
+        $bundle = Bundle::with('media')->published()->latest()->first();
+
+        return view('home.index', compact('sliders', 'products', 'featuredProducts', 'editorialArticles', 'bundle'));
     }
 
     /**
