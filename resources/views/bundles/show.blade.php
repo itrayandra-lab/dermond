@@ -103,17 +103,14 @@
 
     {{-- MAIN CONTENT --}}
     <div class="max-w-7xl mx-auto px-6 py-16">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-
-            {{-- LEFT: Details --}}
-            <div class="lg:col-span-2 space-y-14">
+        <div class="space-y-14">
 
                 {{-- Included Products --}}
                 @if($products->count() > 0)
                 <div>
                     <p class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-2">ISI BUNDLE</p>
                     <h2 class="text-2xl font-black text-white uppercase mb-6">{{ $products->count() }} Produk dalam Paket</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         @foreach($products as $product)
                         <a href="{{ route('products.show', $product->slug) }}"
                            class="group flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500/30 hover:bg-white/[0.08] transition-all">
@@ -141,7 +138,7 @@
                 <div>
                     <p class="text-xs font-bold tracking-[0.3em] text-blue-400 uppercase mb-2">KEUNGGULAN</p>
                     <h2 class="text-2xl font-black text-white uppercase mb-6">Kenapa Pilih Bundle Ini?</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         @foreach($bundle->benefits as $benefit)
                         <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
                             <div class="w-9 h-9 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -172,54 +169,6 @@
                 </div>
                 @endif
 
-            </div>
-
-            {{-- RIGHT: Order Card --}}
-            <div>
-                <div class="lg:sticky lg:top-24 space-y-4">
-                    <div class="bg-[#0f172a] border border-white/10 rounded-2xl p-6">
-
-                        <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-5">Ringkasan Pesanan</p>
-
-                        {{-- Price summary --}}
-                        <div class="space-y-2 mb-5 pb-5 border-b border-white/5">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-400 text-sm">{{ $products->count() > 0 ? $products->count() : count($bundle->included_products ?? []) }} produk</span>
-                                @if($bundle->hasSavings())
-                                <span class="text-gray-500 line-through text-sm font-mono">Rp {{ number_format($bundle->original_price, 0, ',', '.') }}</span>
-                                @endif
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-white font-bold">Total Bundle</span>
-                                <span class="text-xl font-black text-white font-mono">Rp {{ number_format($bundle->price, 0, ',', '.') }}</span>
-                            </div>
-                            @if($bundle->hasSavings())
-                            <div class="bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold px-3 py-2 rounded-lg text-center">
-                                Hemat Rp {{ number_format($bundle->getSavingsAmount(), 0, ',', '.') }}
-                            </div>
-                            @endif
-                        </div>
-
-                        {{-- CTA --}}
-                        @if($products->count() > 0)
-                        <button @click="addAllToCart()" :disabled="addingToCart"
-                                class="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-all flex items-center justify-center gap-2 mb-3">
-                            <svg class="w-4 h-4" x-show="!addingToCart" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                            <span x-text="addingToCart ? 'Menambahkan...' : (added ? 'Ditambahkan ✓' : 'Tambah ke Keranjang')"></span>
-                        </button>
-                        @endif
-
-                        <a href="{{ route('cart.index') }}"
-                           class="block w-full py-3 border border-white/10 hover:border-white/20 text-gray-400 hover:text-white rounded-xl font-bold uppercase tracking-wider text-xs transition-all text-center">
-                            Lihat Keranjang
-                        </a>
-                    </div>
-
-                    <div class="flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/5">
-                        <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        <p class="text-xs text-gray-400 leading-relaxed">Satu set lengkap untuk rutinitas harian pria aktif.</p>
-                    </div>
-                </div>
             </div>
 
         </div>
